@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
-import 'package:minecraft_server_installer/vanila/adapter/gateway/game_version_api_service.dart';
+import 'package:minecraft_server_installer/vanila/adapter/gateway/vanila_api_service.dart';
 import 'package:minecraft_server_installer/vanila/domain/entity/game_version.dart';
 
-class GameVersionApiServiceImpl implements GameVersionApiService {
+class VanilaApiServiceImpl implements VanilaApiService {
   @override
   Future<List<GameVersion>> fetchGameVersionList() async {
     final sourceUrl = Uri.parse('https://www.dropbox.com/s/mtz3moc9dpjtz7s/GameVersions.txt?dl=1');

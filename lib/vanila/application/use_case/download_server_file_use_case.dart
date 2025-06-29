@@ -1,8 +1,8 @@
-import 'package:minecraft_server_installer/vanila/application/repository/game_version_repository.dart';
+import 'package:minecraft_server_installer/vanila/application/repository/vanila_repository.dart';
 import 'package:minecraft_server_installer/vanila/domain/entity/game_version.dart';
 
 class DownloadServerFileUseCase {
-  final GameVersionRepository _gameVersionRepository;
+  final VanilaRepository _gameVersionRepository;
 
   DownloadServerFileUseCase(this._gameVersionRepository);
 

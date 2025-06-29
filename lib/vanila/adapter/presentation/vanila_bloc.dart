@@ -1,14 +1,14 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:minecraft_server_installer/vanila/adapter/presentation/game_version_view_model.dart';
+import 'package:minecraft_server_installer/vanila/adapter/presentation/vanila_state.dart';
 import 'package:minecraft_server_installer/vanila/application/use_case/download_server_file_use_case.dart';
 import 'package:minecraft_server_installer/vanila/application/use_case/get_game_version_list_use_case.dart';
 
-class GameVersionBloc extends Bloc<VanilaEvent, VanilaState> {
+class VanilaBloc extends Bloc<VanilaEvent, VanilaState> {
   final GetGameVersionListUseCase _getGameVersionListUseCase;
   final DownloadServerFileUseCase _downloadServerFileUseCase;
 
-  GameVersionBloc(this._getGameVersionListUseCase, this._downloadServerFileUseCase) : super(const VanilaState.empty()) {
+  VanilaBloc(this._getGameVersionListUseCase, this._downloadServerFileUseCase) : super(const VanilaState.empty()) {
     on<VanilaGameVersionListLoadedEvent>((_, emit) async {
       try {
         final gameVersions = await _getGameVersionListUseCase();
@@ -49,23 +49,3 @@ class VanilaGameVersionSelectedEvent extends VanilaEvent {
 }
 
 class VanilaServerFileDownloadedEvent extends VanilaEvent {}
-
-class VanilaState with EquatableMixin {
-  final List<GameVersionViewModel> gameVersions;
-  final GameVersionViewModel? selectedGameVersion;
-
-  const VanilaState({required this.gameVersions, required this.selectedGameVersion});
-
-  const VanilaState.empty() : this(gameVersions: const [], selectedGameVersion: null);
-
-  @override
-  List<Object?> get props => [gameVersions, selectedGameVersion];
-
-  bool get isGameVersionSelected => selectedGameVersion != null;
-
-  VanilaState copyWith({List<GameVersionViewModel>? gameVersions, GameVersionViewModel? selectedGameVersion}) =>
-      VanilaState(
-        gameVersions: gameVersions ?? this.gameVersions,
-        selectedGameVersion: selectedGameVersion ?? this.selectedGameVersion,
-      );
-}
