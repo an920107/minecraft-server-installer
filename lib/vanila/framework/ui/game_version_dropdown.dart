@@ -13,10 +13,11 @@ class GameVersionDropdown extends StatelessWidget {
     listener: (_, __) {},
     builder:
         (_, state) => DropdownMenu(
+          initialSelection: state.selectedGameVersion,
           enabled: state.gameVersions.isNotEmpty,
           requestFocusOnTap: false,
           expandedInsets: EdgeInsets.zero,
-          label: const Text(Strings.fieldGameVersion),
+          label: const Text('${Strings.fieldGameVersion} *'),
           onSelected: (value) {
             if (value != null) {
               context.read<VanilaBloc>().add(VanilaGameVersionSelectedEvent(value));
