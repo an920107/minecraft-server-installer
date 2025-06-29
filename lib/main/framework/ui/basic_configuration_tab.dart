@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:minecraft_server_installer/main/framework/ui/strings.dart';
-import 'package:minecraft_server_installer/vanila/adapter/presentation/vanila_bloc.dart';
-import 'package:minecraft_server_installer/vanila/adapter/presentation/game_version_view_model.dart';
-import 'package:minecraft_server_installer/vanila/adapter/presentation/vanila_state.dart';
-import 'package:minecraft_server_installer/vanila/framework/ui/game_version_dropdown.dart';
+import 'package:minecraft_server_installer/vanilla/adapter/presentation/vanilla_bloc.dart';
+import 'package:minecraft_server_installer/vanilla/adapter/presentation/game_version_view_model.dart';
+import 'package:minecraft_server_installer/vanilla/adapter/presentation/vanilla_state.dart';
+import 'package:minecraft_server_installer/vanilla/framework/ui/game_version_dropdown.dart';
 
 class BasicConfigurationTab extends StatefulWidget {
   const BasicConfigurationTab({super.key});
@@ -23,7 +23,7 @@ class _BasicConfigurationTabState extends State<BasicConfigurationTab> {
       children: [
         const GameVersionDropdown(),
         const Spacer(),
-        BlocConsumer<VanilaBloc, VanilaState>(
+        BlocConsumer<VanillaBloc, VanillaState>(
           listener: (_, __) {},
           builder:
               (context, state) => Row(
@@ -50,6 +50,6 @@ class _BasicConfigurationTabState extends State<BasicConfigurationTab> {
   }
 
   void _downloadServerFile() {
-    context.read<VanilaBloc>().add(VanilaServerFileDownloadedEvent());
+    context.read<VanillaBloc>().add(VanillaServerFileDownloadedEvent());
   }
 }

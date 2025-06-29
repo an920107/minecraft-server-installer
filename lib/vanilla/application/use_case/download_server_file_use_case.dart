@@ -1,10 +1,10 @@
-import 'package:minecraft_server_installer/vanila/application/repository/vanila_repository.dart';
-import 'package:minecraft_server_installer/vanila/domain/entity/game_version.dart';
+import 'package:minecraft_server_installer/vanilla/application/repository/vanilla_repository.dart';
+import 'package:minecraft_server_installer/vanilla/domain/entity/game_version.dart';
 
 typedef DownloadProgressCallback = void Function(double progress);
 
 class DownloadServerFileUseCase {
-  final VanilaRepository _gameVersionRepository;
+  final VanillaRepository _gameVersionRepository;
 
   DownloadServerFileUseCase(this._gameVersionRepository);
 

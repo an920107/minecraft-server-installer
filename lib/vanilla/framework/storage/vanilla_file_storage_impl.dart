@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:minecraft_server_installer/vanila/adapter/gateway/vanila_file_storage.dart';
+import 'package:minecraft_server_installer/vanilla/adapter/gateway/vanilla_file_storage.dart';
 
-class VanilaFileStorageImpl implements VanilaFileStorage {
+class VanillaFileStorageImpl implements VanillaFileStorage {
   @override
   Future<void> saveFile(Uint8List fileBytes, String savePath) async {
     final file = File(savePath);

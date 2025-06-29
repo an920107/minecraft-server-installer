@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:minecraft_server_installer/vanila/domain/entity/game_version.dart';
+import 'package:minecraft_server_installer/vanilla/domain/entity/game_version.dart';
 
 class GameVersionViewModel with EquatableMixin {
   final String name;

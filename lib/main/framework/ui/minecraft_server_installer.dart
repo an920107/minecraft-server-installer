@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:minecraft_server_installer/main/framework/ui/basic_configuration_tab.dart';
-import 'package:minecraft_server_installer/vanila/adapter/gateway/vanila_repository_impl.dart';
-import 'package:minecraft_server_installer/vanila/adapter/presentation/vanila_bloc.dart';
-import 'package:minecraft_server_installer/vanila/adapter/presentation/vanila_state.dart';
-import 'package:minecraft_server_installer/vanila/application/use_case/download_server_file_use_case.dart';
-import 'package:minecraft_server_installer/vanila/application/use_case/get_game_version_list_use_case.dart';
-import 'package:minecraft_server_installer/vanila/framework/api/vanila_api_service_impl.dart';
-import 'package:minecraft_server_installer/vanila/framework/storage/vanila_file_storage_impl.dart';
+import 'package:minecraft_server_installer/vanilla/adapter/gateway/vanilla_repository_impl.dart';
+import 'package:minecraft_server_installer/vanilla/adapter/presentation/vanilla_bloc.dart';
+import 'package:minecraft_server_installer/vanilla/adapter/presentation/vanilla_state.dart';
+import 'package:minecraft_server_installer/vanilla/application/use_case/download_server_file_use_case.dart';
+import 'package:minecraft_server_installer/vanilla/application/use_case/get_game_version_list_use_case.dart';
+import 'package:minecraft_server_installer/vanilla/framework/api/vanilla_api_service_impl.dart';
+import 'package:minecraft_server_installer/vanilla/framework/storage/vanilla_file_storage_impl.dart';
 
 class MinecraftServerInstaller extends StatelessWidget {
   const MinecraftServerInstaller({super.key});
@@ -17,9 +17,9 @@ class MinecraftServerInstaller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final gameVersionApiService = VanilaApiServiceImpl();
-    final gameVersionFileStorage = VanilaFileStorageImpl();
-    final gameVersionRepository = VanilaRepositoryImpl(gameVersionApiService, gameVersionFileStorage);
+    final gameVersionApiService = VanillaApiServiceImpl();
+    final gameVersionFileStorage = VanillaFileStorageImpl();
+    final gameVersionRepository = VanillaRepositoryImpl(gameVersionApiService, gameVersionFileStorage);
     final getGameVersionListUseCase = GetGameVersionListUseCase(gameVersionRepository);
     final downloadServerFileUseCase = DownloadServerFileUseCase(gameVersionRepository);
 
@@ -28,15 +28,15 @@ class MinecraftServerInstaller extends StatelessWidget {
       theme: ThemeData.light().copyWith(colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue.shade900)),
       home: MultiBlocProvider(
         providers: [
-          BlocProvider<VanilaBloc>(
+          BlocProvider<VanillaBloc>(
             create:
                 (context) =>
-                    VanilaBloc(getGameVersionListUseCase, downloadServerFileUseCase)
-                      ..add(VanilaGameVersionListLoadedEvent()),
+                    VanillaBloc(getGameVersionListUseCase, downloadServerFileUseCase)
+                      ..add(VanillaGameVersionListLoadedEvent()),
           ),
         ],
         child: Scaffold(
-          body: BlocConsumer<VanilaBloc, VanilaState>(
+          body: BlocConsumer<VanillaBloc, VanillaState>(
             listener: (_, __) {},
             builder: (_, state) {
               if (state.isLocked) {

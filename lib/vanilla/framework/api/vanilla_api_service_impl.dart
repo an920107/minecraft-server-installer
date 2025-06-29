@@ -3,11 +3,11 @@ import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
 import 'package:minecraft_server_installer/main/constants.dart';
-import 'package:minecraft_server_installer/vanila/adapter/gateway/vanila_api_service.dart';
-import 'package:minecraft_server_installer/vanila/application/use_case/download_server_file_use_case.dart';
-import 'package:minecraft_server_installer/vanila/domain/entity/game_version.dart';
+import 'package:minecraft_server_installer/vanilla/adapter/gateway/vanilla_api_service.dart';
+import 'package:minecraft_server_installer/vanilla/application/use_case/download_server_file_use_case.dart';
+import 'package:minecraft_server_installer/vanilla/domain/entity/game_version.dart';
 
-class VanilaApiServiceImpl implements VanilaApiService {
+class VanillaApiServiceImpl implements VanillaApiService {
   @override
   Future<List<GameVersion>> fetchGameVersionList() async {
     final sourceUrl = Uri.parse(Constants.gameVersionListUrl);
