@@ -2,4 +2,6 @@ import 'package:minecraft_server_installer/vanila/domain/entity/game_version.dar
 
 abstract interface class GameVersionRepository {
   Future<List<GameVersion>> getGameVersionList();
+
+  Future<void> downloadServerFile(GameVersion version, String savePath);
 }

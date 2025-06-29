@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:http/http.dart' as http;
 import 'package:minecraft_server_installer/vanila/adapter/gateway/game_version_api_service.dart';
 import 'package:minecraft_server_installer/vanila/domain/entity/game_version.dart';
@@ -16,5 +18,11 @@ class GameVersionApiServiceImpl implements GameVersionApiService {
         }).toList();
 
     return gameVersionList;
+  }
+
+  @override
+  Future<Uint8List> fetchServerFile(Uri url) async {
+    final response = await http.get(url);
+    return response.bodyBytes;
   }
 }

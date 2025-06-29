@@ -9,6 +9,10 @@ class GameVersionViewModel with EquatableMixin {
 
   GameVersionViewModel.from(GameVersion gameVersion) : name = gameVersion.name, url = gameVersion.url;
 
+  GameVersion toEntity() {
+    return GameVersion(name: name, url: url);
+  }
+
   @override
   List<Object?> get props => [name, url];
 }
