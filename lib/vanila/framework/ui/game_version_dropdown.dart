@@ -5,19 +5,8 @@ import 'package:minecraft_server_installer/vanila/adapter/presentation/vanila_bl
 import 'package:minecraft_server_installer/vanila/adapter/presentation/game_version_view_model.dart';
 import 'package:minecraft_server_installer/vanila/adapter/presentation/vanila_state.dart';
 
-class GameVersionDropdown extends StatefulWidget {
+class GameVersionDropdown extends StatelessWidget {
   const GameVersionDropdown({super.key});
-
-  @override
-  State<GameVersionDropdown> createState() => _GameVersionDropdownState();
-}
-
-class _GameVersionDropdownState extends State<GameVersionDropdown> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<VanilaBloc>().add(VanilaGameVersionListLoadedEvent());
-  }
 
   @override
   Widget build(BuildContext context) => BlocConsumer<VanilaBloc, VanilaState>(

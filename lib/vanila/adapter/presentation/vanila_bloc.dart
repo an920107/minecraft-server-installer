@@ -15,9 +15,8 @@ class VanilaBloc extends Bloc<VanilaEvent, VanilaState> {
       try {
         final gameVersions = await _getGameVersionListUseCase();
         emit(
-          VanilaState(
+          const VanilaState.empty().copyWith(
             gameVersions: gameVersions.map((entity) => GameVersionViewModel.from(entity)).toList(),
-            selectedGameVersion: null,
           ),
         );
       } on Exception {
@@ -35,7 +34,23 @@ class VanilaBloc extends Bloc<VanilaEvent, VanilaState> {
         return;
       }
 
-      await _downloadServerFileUseCase(gameVersion.toEntity(), path.join('.', Constants.serverFileName));
+      emit(state.copyWith(isLocked: true));
+      await _downloadServerFileUseCase(
+        gameVersion.toEntity(),
+        path.join('.', Constants.serverFileName),
+        onProgressChanged: (progress) => add(_VanilaDownloadProgressChangedEvent(progress)),
+      );
+      emit(state.copyWith(isLocked: false));
+    });
+
+    on<_VanilaDownloadProgressChangedEvent>((event, emit) {
+      if (event.progress < 0) {
+        emit(state.copyWith(downloadProgress: 0));
+      } else if (event.progress > 1) {
+        emit(state.copyWith(downloadProgress: 1));
+      } else {
+        emit(state.copyWith(downloadProgress: event.progress));
+      }
     });
   }
 }
@@ -51,3 +66,9 @@ class VanilaGameVersionSelectedEvent extends VanilaEvent {
 }
 
 class VanilaServerFileDownloadedEvent extends VanilaEvent {}
+
+class _VanilaDownloadProgressChangedEvent extends VanilaEvent {
+  final double progress;
+
+  _VanilaDownloadProgressChangedEvent(this.progress);
+}
