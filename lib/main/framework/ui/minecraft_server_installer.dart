@@ -36,7 +36,12 @@ class MinecraftServerInstaller extends StatelessWidget {
 
     return MaterialApp(
       title: 'Minecraft Server Installer',
-      theme: ThemeData.light().copyWith(colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue.shade900)),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          brightness: Brightness.light,
+          seedColor: Colors.blue.shade900,
+        ),
+      ),
       home: MultiBlocProvider(
         providers: [
           BlocProvider(
