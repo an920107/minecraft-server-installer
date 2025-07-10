@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:minecraft_server_installer/main/adapter/presentation/installation_state.dart';
 import 'package:minecraft_server_installer/main/adapter/presentation/progress_view_model.dart';
+import 'package:minecraft_server_installer/main/adapter/presentation/range_view_model.dart';
 import 'package:minecraft_server_installer/main/application/use_case/download_file_use_case.dart';
 import 'package:minecraft_server_installer/main/application/use_case/grant_file_permission_use_case.dart';
 import 'package:minecraft_server_installer/main/application/use_case/write_file_use_case.dart';
@@ -59,10 +60,16 @@ class InstallationBloc extends Bloc<InstallationEvent, InstallationState> {
     });
 
     on<InstallationConfigurationUpdatedEvent>((event, emit) {
+      if (event.customRamSize != null && !event.customRamSize!.isValid) {
+        return;
+      }
+
       final newState = state.copyWith(
         gameVersion: event.gameVersion,
         savePath: event.savePath,
         isEulaAgreed: event.isEulaAgreed,
+        isCustomRamSizeEnabled: event.isCustomRamSizeEnabled,
+        customRamSize: event.customRamSize,
       );
       emit(newState);
     });
@@ -83,10 +90,14 @@ class InstallationConfigurationUpdatedEvent extends InstallationEvent {
   final GameVersionViewModel? gameVersion;
   final String? savePath;
   final bool? isEulaAgreed;
+  final bool? isCustomRamSizeEnabled;
+  final RangeViewModel? customRamSize;
 
   InstallationConfigurationUpdatedEvent({
     this.gameVersion,
     this.savePath,
     this.isEulaAgreed,
+    this.isCustomRamSizeEnabled,
+    this.customRamSize,
   });
 }

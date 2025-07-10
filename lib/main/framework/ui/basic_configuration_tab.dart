@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:minecraft_server_installer/main/adapter/presentation/installation_bloc.dart';
 import 'package:minecraft_server_installer/main/adapter/presentation/installation_state.dart';
+import 'package:minecraft_server_installer/main/adapter/presentation/range_view_model.dart';
 import 'package:minecraft_server_installer/main/constants.dart';
 import 'package:minecraft_server_installer/main/framework/ui/strings.dart';
 import 'package:minecraft_server_installer/vanilla/framework/ui/game_version_dropdown.dart';
@@ -20,6 +21,8 @@ class BasicConfigurationTab extends StatelessWidget {
           _pathBrowsingField,
           const Gap(16),
           _eulaCheckbox,
+          _enableCustomRamSizeCheckbox,
+          _customRamSizeControl,
           const Spacer(),
           _bottomControl,
         ],
@@ -77,6 +80,76 @@ class BasicConfigurationTab extends StatelessWidget {
             icon: const Icon(Icons.info_outline),
           ),
         ],
+      );
+
+  Widget get _enableCustomRamSizeCheckbox => BlocConsumer<InstallationBloc, InstallationState>(
+        listener: (_, __) {},
+        builder: (context, state) => CheckboxListTile(
+          title: const Text(Strings.fieldCustomRamSize),
+          value: state.isCustomRamSizeEnabled,
+          onChanged: (value) => context
+              .read<InstallationBloc>()
+              .add(InstallationConfigurationUpdatedEvent(isCustomRamSizeEnabled: value ?? false)),
+          controlAffinity: ListTileControlAffinity.leading,
+          contentPadding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        ),
+      );
+
+  Widget get _customRamSizeControl => BlocConsumer<InstallationBloc, InstallationState>(
+        listener: (_, __) {},
+        builder: (context, state) {
+          if (!state.isCustomRamSizeEnabled) {
+            return const SizedBox.shrink();
+          }
+
+          return Column(
+            children: [
+              RangeSlider(
+                values: RangeValues(state.ramSize.min.toDouble(), state.ramSize.max.toDouble()),
+                min: 512,
+                max: 16384,
+                divisions: (16384 - 512) ~/ 128,
+                labels: RangeLabels(
+                  '${state.ramSize.min} MB',
+                  '${state.ramSize.max} MB',
+                ),
+                onChanged: (values) => context.read<InstallationBloc>().add(
+                      InstallationConfigurationUpdatedEvent(
+                        customRamSize: RangeViewModel(min: values.start.toInt(), max: values.end.toInt()),
+                      ),
+                    ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: TextEditingController(text: state.ramSize.min.toString()),
+                      canRequestFocus: false,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        label: const Text('${Strings.labelMinRamSize} (MB)'),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                      ),
+                    ),
+                  ),
+                  const Gap(16),
+                  Expanded(
+                    child: TextField(
+                      controller: TextEditingController(text: state.ramSize.max.toString()),
+                      canRequestFocus: false,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        label: const Text('${Strings.labelMaxRamSize} (MB)'),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          );
+        },
       );
 
   Widget get _bottomControl => BlocConsumer<InstallationBloc, InstallationState>(
