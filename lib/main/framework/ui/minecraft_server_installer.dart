@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:minecraft_server_installer/main/adapter/gateway/installation_repository_impl.dart';
 import 'package:minecraft_server_installer/main/adapter/presentation/installation_bloc.dart';
-import 'package:minecraft_server_installer/main/adapter/presentation/installation_state.dart';
 import 'package:minecraft_server_installer/main/application/use_case/download_file_use_case.dart';
 import 'package:minecraft_server_installer/main/application/use_case/grant_file_permission_use_case.dart';
 import 'package:minecraft_server_installer/main/application/use_case/write_file_use_case.dart';
@@ -56,10 +55,9 @@ class MinecraftServerInstaller extends StatelessWidget {
           ),
         ],
         child: Scaffold(
-          body: BlocConsumer<InstallationBloc, InstallationState>(
-            listener: (_, __) {},
-            builder: (_, state) {
-              if (state.isLocked) {
+          body: Builder(
+            builder: (context) {
+              if (context.watch<InstallationBloc>().state.isLocked) {
                 return MouseRegion(cursor: SystemMouseCursors.forbidden, child: AbsorbPointer(child: _body));
               }
 
