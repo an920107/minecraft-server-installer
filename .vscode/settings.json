@@ -1,4 +1,8 @@
 {
   "dart.flutterSdkPath": ".fvm/versions/3.29.3",
-  "dart.lineLength": 120
+  "dart.sdkPath": ".fvm/versions/3.29.3",
+  "[dart]": {
+    "editor.rulers": [120],
+    "editor.suggest.insertMode": "insert"
+  }
 }

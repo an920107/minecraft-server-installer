@@ -4,5 +4,9 @@ import 'package:minecraft_server_installer/vanilla/domain/entity/game_version.da
 abstract interface class VanillaRepository {
   Future<List<GameVersion>> getGameVersionList();
 
-  Future<void> downloadServerFile(GameVersion version, String savePath, {DownloadProgressCallback? onProgressChanged});
+  Future<void> downloadServerFile(
+    GameVersion version,
+    String savePath, {
+    DownloadProgressCallback? onProgressChanged,
+  });
 }

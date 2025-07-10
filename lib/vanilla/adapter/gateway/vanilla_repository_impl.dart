@@ -19,7 +19,10 @@ class VanillaRepositoryImpl implements VanillaRepository {
     String savePath, {
     DownloadProgressCallback? onProgressChanged,
   }) async {
-    final fileBytes = await _gameVersionApiService.fetchServerFile(version.url, onProgressChanged: onProgressChanged);
+    final fileBytes = await _gameVersionApiService.fetchServerFile(
+      version.url,
+      onProgressChanged: onProgressChanged,
+    );
     await _gameVersionFileStorage.saveFile(fileBytes, savePath);
   }
 }

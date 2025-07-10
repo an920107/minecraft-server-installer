@@ -16,7 +16,7 @@ class VanillaBloc extends Bloc<VanillaEvent, VanillaState> {
         final gameVersions = await _getGameVersionListUseCase();
         emit(
           const VanillaState.empty().copyWith(
-            gameVersions: gameVersions.map((entity) => GameVersionViewModel.from(entity)).toList(),
+            gameVersions: gameVersions.map((entity) => GameVersionViewModel.fromEntity(entity)).toList(),
           ),
         );
       } on Exception {

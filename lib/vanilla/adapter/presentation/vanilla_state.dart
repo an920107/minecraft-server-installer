@@ -15,10 +15,20 @@ class VanillaState with EquatableMixin {
   });
 
   const VanillaState.empty()
-    : this(isLocked: false, downloadProgress: 0, gameVersions: const [], selectedGameVersion: null);
+      : this(
+          isLocked: false,
+          downloadProgress: 0,
+          gameVersions: const [],
+          selectedGameVersion: null,
+        );
 
   @override
-  List<Object?> get props => [isLocked, downloadProgress, gameVersions, selectedGameVersion];
+  List<Object?> get props => [
+        isLocked,
+        downloadProgress,
+        gameVersions,
+        selectedGameVersion,
+      ];
 
   bool get isGameVersionSelected => selectedGameVersion != null;
 
@@ -29,10 +39,11 @@ class VanillaState with EquatableMixin {
     double? downloadProgress,
     List<GameVersionViewModel>? gameVersions,
     GameVersionViewModel? selectedGameVersion,
-  }) => VanillaState(
-    isLocked: isLocked ?? this.isLocked,
-    downloadProgress: downloadProgress ?? this.downloadProgress,
-    gameVersions: gameVersions ?? this.gameVersions,
-    selectedGameVersion: selectedGameVersion ?? this.selectedGameVersion,
-  );
+  }) =>
+      VanillaState(
+        isLocked: isLocked ?? this.isLocked,
+        downloadProgress: downloadProgress ?? this.downloadProgress,
+        gameVersions: gameVersions ?? this.gameVersions,
+        selectedGameVersion: selectedGameVersion ?? this.selectedGameVersion,
+      );
 }

@@ -5,13 +5,16 @@ class GameVersionViewModel with EquatableMixin {
   final String name;
   final Uri url;
 
-  const GameVersionViewModel({required this.name, required this.url});
+  const GameVersionViewModel({
+    required this.name,
+    required this.url,
+  });
 
-  GameVersionViewModel.from(GameVersion gameVersion) : name = gameVersion.name, url = gameVersion.url;
+  GameVersionViewModel.fromEntity(GameVersion gameVersion)
+      : name = gameVersion.name,
+        url = gameVersion.url;
 
-  GameVersion toEntity() {
-    return GameVersion(name: name, url: url);
-  }
+  GameVersion toEntity() => GameVersion(name: name, url: url);
 
   @override
   List<Object?> get props => [name, url];

@@ -8,6 +8,14 @@ class DownloadServerFileUseCase {
 
   DownloadServerFileUseCase(this._gameVersionRepository);
 
-  Future<void> call(GameVersion version, String savePath, {DownloadProgressCallback? onProgressChanged}) =>
-      _gameVersionRepository.downloadServerFile(version, savePath, onProgressChanged: onProgressChanged);
+  Future<void> call(
+    GameVersion version,
+    String savePath, {
+    DownloadProgressCallback? onProgressChanged,
+  }) =>
+      _gameVersionRepository.downloadServerFile(
+        version,
+        savePath,
+        onProgressChanged: onProgressChanged,
+      );
 }

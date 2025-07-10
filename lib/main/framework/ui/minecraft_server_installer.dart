@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:minecraft_server_installer/main/adapter/presentation/installation_bloc.dart';
 import 'package:minecraft_server_installer/main/framework/ui/basic_configuration_tab.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/gateway/vanilla_repository_impl.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/presentation/vanilla_bloc.dart';
@@ -29,11 +30,10 @@ class MinecraftServerInstaller extends StatelessWidget {
       home: MultiBlocProvider(
         providers: [
           BlocProvider<VanillaBloc>(
-            create:
-                (context) =>
-                    VanillaBloc(getGameVersionListUseCase, downloadServerFileUseCase)
-                      ..add(VanillaGameVersionListLoadedEvent()),
+            create: (_) => VanillaBloc(getGameVersionListUseCase, downloadServerFileUseCase)
+              ..add(VanillaGameVersionListLoadedEvent()),
           ),
+          BlocProvider(create: (_) => InstallationBloc())
         ],
         child: Scaffold(
           body: BlocConsumer<VanillaBloc, VanillaState>(

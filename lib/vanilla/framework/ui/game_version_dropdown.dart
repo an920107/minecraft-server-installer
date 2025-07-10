@@ -10,9 +10,8 @@ class GameVersionDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocConsumer<VanillaBloc, VanillaState>(
-    listener: (_, __) {},
-    builder:
-        (_, state) => DropdownMenu(
+        listener: (_, __) {},
+        builder: (_, state) => DropdownMenu(
           initialSelection: state.selectedGameVersion,
           enabled: state.gameVersions.isNotEmpty,
           requestFocusOnTap: false,
@@ -23,13 +22,12 @@ class GameVersionDropdown extends StatelessWidget {
               context.read<VanillaBloc>().add(VanillaGameVersionSelectedEvent(value));
             }
           },
-          dropdownMenuEntries:
-              state.gameVersions
-                  .map(
-                    (gameVersion) =>
-                        DropdownMenuEntry<GameVersionViewModel>(value: gameVersion, label: gameVersion.name),
-                  )
-                  .toList(),
+          dropdownMenuEntries: state.gameVersions
+              .map((gameVersion) => DropdownMenuEntry<GameVersionViewModel>(
+                    value: gameVersion,
+                    label: gameVersion.name,
+                  ))
+              .toList(),
         ),
-  );
+      );
 }
