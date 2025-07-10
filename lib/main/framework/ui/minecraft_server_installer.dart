@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:minecraft_server_installer/main/adapter/gateway/installation_repository_impl.dart';
+import 'package:minecraft_server_installer/main/adapter/presentation/installation_bloc.dart';
+import 'package:minecraft_server_installer/main/adapter/presentation/installation_state.dart';
+import 'package:minecraft_server_installer/main/application/use_case/download_file_use_case.dart';
+import 'package:minecraft_server_installer/main/framework/api/installation_api_service_impl.dart';
+import 'package:minecraft_server_installer/main/framework/storage/installation_file_storage_impl.dart';
 import 'package:minecraft_server_installer/main/framework/ui/basic_configuration_tab.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/gateway/vanilla_repository_impl.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/presentation/vanilla_bloc.dart';
-import 'package:minecraft_server_installer/vanilla/adapter/presentation/vanilla_state.dart';
-import 'package:minecraft_server_installer/vanilla/application/use_case/download_server_file_use_case.dart';
 import 'package:minecraft_server_installer/vanilla/application/use_case/get_game_version_list_use_case.dart';
 import 'package:minecraft_server_installer/vanilla/framework/api/vanilla_api_service_impl.dart';
-import 'package:minecraft_server_installer/vanilla/framework/storage/vanilla_file_storage_impl.dart';
 
 class MinecraftServerInstaller extends StatelessWidget {
   const MinecraftServerInstaller({super.key});
@@ -17,26 +20,28 @@ class MinecraftServerInstaller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final installationApiService = InstallationApiServiceImpl();
+    final installationFileStorage = InstallationFileStorageImpl();
+    final installationRepository = InstallationRepositoryImpl(installationApiService, installationFileStorage);
+
     final gameVersionApiService = VanillaApiServiceImpl();
-    final gameVersionFileStorage = VanillaFileStorageImpl();
-    final gameVersionRepository = VanillaRepositoryImpl(gameVersionApiService, gameVersionFileStorage);
+    final gameVersionRepository = VanillaRepositoryImpl(gameVersionApiService);
+
+    final downloadFileUseCase = DownloadFileUseCase(installationRepository);
     final getGameVersionListUseCase = GetGameVersionListUseCase(gameVersionRepository);
-    final downloadServerFileUseCase = DownloadServerFileUseCase(gameVersionRepository);
 
     return MaterialApp(
       title: 'Minecraft Server Installer',
       theme: ThemeData.light().copyWith(colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue.shade900)),
       home: MultiBlocProvider(
         providers: [
+          BlocProvider(create: (_) => InstallationBloc(downloadFileUseCase)),
           BlocProvider<VanillaBloc>(
-            create:
-                (context) =>
-                    VanillaBloc(getGameVersionListUseCase, downloadServerFileUseCase)
-                      ..add(VanillaGameVersionListLoadedEvent()),
+            create: (_) => VanillaBloc(getGameVersionListUseCase)..add(VanillaGameVersionListLoadedEvent()),
           ),
         ],
         child: Scaffold(
-          body: BlocConsumer<VanillaBloc, VanillaState>(
+          body: BlocConsumer<InstallationBloc, InstallationState>(
             listener: (_, __) {},
             builder: (_, state) {
               if (state.isLocked) {
