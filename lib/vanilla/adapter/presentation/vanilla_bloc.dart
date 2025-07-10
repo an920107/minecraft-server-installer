@@ -28,7 +28,7 @@ class VanillaBloc extends Bloc<VanillaEvent, VanillaState> {
       emit(state.copyWith(selectedGameVersion: event.gameVersion));
     });
 
-    on<VanillaServerFileDownloadedEvent>((_, emit) async {
+    on<VanillaServerFileDownloadedEvent>((event, emit) async {
       final gameVersion = state.selectedGameVersion;
       if (gameVersion == null) {
         return;
@@ -37,7 +37,7 @@ class VanillaBloc extends Bloc<VanillaEvent, VanillaState> {
       emit(state.copyWith(isLocked: true));
       await _downloadServerFileUseCase(
         gameVersion.toEntity(),
-        path.join('.', Constants.serverFileName),
+        path.join(event.savePath, Constants.serverFileName),
         onProgressChanged: (progress) => add(_VanillaDownloadProgressChangedEvent(progress)),
       );
       emit(state.copyWith(isLocked: false));
@@ -65,7 +65,11 @@ class VanillaGameVersionSelectedEvent extends VanillaEvent {
   VanillaGameVersionSelectedEvent(this.gameVersion);
 }
 
-class VanillaServerFileDownloadedEvent extends VanillaEvent {}
+class VanillaServerFileDownloadedEvent extends VanillaEvent {
+  final String savePath;
+
+  VanillaServerFileDownloadedEvent(this.savePath);
+}
 
 class _VanillaDownloadProgressChangedEvent extends VanillaEvent {
   final double progress;

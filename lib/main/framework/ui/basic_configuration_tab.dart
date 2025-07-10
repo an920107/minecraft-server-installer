@@ -50,6 +50,6 @@ class _BasicConfigurationTabState extends State<BasicConfigurationTab> {
   }
 
   void _downloadServerFile() {
-    context.read<VanillaBloc>().add(VanillaServerFileDownloadedEvent());
+    context.read<VanillaBloc>().add(VanillaServerFileDownloadedEvent('.'));
   }
 }
