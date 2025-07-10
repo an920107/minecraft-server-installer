@@ -34,9 +34,8 @@ class InstallationBloc extends Bloc<InstallationEvent, InstallationState> {
       );
 
       final startScriptFilePath = path.join(savePath, Constants.startScriptFileName);
-      final startScriptContent = Platform.isWindows
-          ? 'java -jar .\\${Constants.serverFileName}\r\n'
-          : 'java -jar ./${Constants.serverFileName}\n';
+      final startScriptContent =
+          'java -Xmx${state.ramSize.max}M -Xms${state.ramSize.min}M -jar ${Platform.isWindows ? '.${Constants.serverFileName}\r\n' : './${Constants.serverFileName}\n'}';
       await writeFileUseCase(startScriptFilePath, startScriptContent);
       await grantFilePermissionUseCase(startScriptFilePath);
 
