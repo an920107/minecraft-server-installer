@@ -16,4 +16,9 @@ class InstallationRepositoryImpl implements InstallationRepository {
 
   @override
   Future<void> writeFile(String path, String content) => _fileStorage.writeFile(path, content);
+
+  @override
+  Future<void> grantFileExecutePermission(String path) {
+    return _fileStorage.grantFileExecutePermission(path);
+  }
 }
