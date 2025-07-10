@@ -6,6 +6,7 @@ abstract class Constants {
   static const eulaFileName = 'eula.txt';
   static const eulaFileContent =
       '#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).\neula=true';
+  static const eulaUrl = 'https://account.mojang.com/documents/minecraft_eula';
 
   static final startScriptFileName = Platform.isWindows ? 'start.bat' : 'start.sh';
 }

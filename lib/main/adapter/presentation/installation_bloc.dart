@@ -62,6 +62,7 @@ class InstallationBloc extends Bloc<InstallationEvent, InstallationState> {
       final newState = state.copyWith(
         gameVersion: event.gameVersion,
         savePath: event.savePath,
+        isEulaAgreed: event.isEulaAgreed,
       );
       emit(newState);
     });
@@ -81,9 +82,11 @@ class _InstallationProgressValueChangedEvent extends InstallationEvent {
 class InstallationConfigurationUpdatedEvent extends InstallationEvent {
   final GameVersionViewModel? gameVersion;
   final String? savePath;
+  final bool? isEulaAgreed;
 
   InstallationConfigurationUpdatedEvent({
     this.gameVersion,
     this.savePath,
+    this.isEulaAgreed,
   });
 }
