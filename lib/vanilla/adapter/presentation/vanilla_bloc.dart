@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:minecraft_server_installer/main/adapter/presentation/installation_bloc.dart';
 import 'package:minecraft_server_installer/main/constants.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/presentation/game_version_view_model.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/presentation/vanilla_state.dart';
@@ -7,10 +8,15 @@ import 'package:minecraft_server_installer/vanilla/application/use_case/get_game
 import 'package:path/path.dart' as path;
 
 class VanillaBloc extends Bloc<VanillaEvent, VanillaState> {
+  final InstallationBloc _installationBloc;
   final GetGameVersionListUseCase _getGameVersionListUseCase;
   final DownloadServerFileUseCase _downloadServerFileUseCase;
 
-  VanillaBloc(this._getGameVersionListUseCase, this._downloadServerFileUseCase) : super(const VanillaState.empty()) {
+  VanillaBloc(
+    this._installationBloc,
+    this._getGameVersionListUseCase,
+    this._downloadServerFileUseCase,
+  ) : super(const VanillaState.empty()) {
     on<VanillaGameVersionListLoadedEvent>((_, emit) async {
       try {
         final gameVersions = await _getGameVersionListUseCase();
@@ -24,12 +30,8 @@ class VanillaBloc extends Bloc<VanillaEvent, VanillaState> {
       }
     });
 
-    on<VanillaGameVersionSelectedEvent>((event, emit) {
-      emit(state.copyWith(selectedGameVersion: event.gameVersion));
-    });
-
     on<VanillaServerFileDownloadedEvent>((event, emit) async {
-      final gameVersion = state.selectedGameVersion;
+      final gameVersion = _installationBloc.state.gameVersion;
       if (gameVersion == null) {
         return;
       }

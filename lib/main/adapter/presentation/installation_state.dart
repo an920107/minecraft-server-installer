@@ -31,5 +31,9 @@ class InstallationState with EquatableMixin {
         savePath: savePath ?? this.savePath,
       );
 
-  bool get canStartToInstall => gameVersion != null && savePath != null && savePath!.isNotEmpty;
+  bool get isGameVersionSelected => gameVersion != null;
+
+  bool get isSavePathSelected => savePath != null && savePath!.isNotEmpty;
+
+  bool get canStartToInstall => isGameVersionSelected && isSavePathSelected;
 }

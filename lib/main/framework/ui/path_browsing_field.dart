@@ -36,6 +36,7 @@ class _PathBrowsingFieldState extends State<PathBrowsingField> {
               child: TextField(
                 controller: _textEditingController,
                 readOnly: true,
+                canRequestFocus: false,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                   label: const Text('${Strings.fieldPath} *'),

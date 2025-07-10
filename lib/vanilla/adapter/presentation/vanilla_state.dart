@@ -5,13 +5,11 @@ class VanillaState with EquatableMixin {
   final bool isLocked;
   final double downloadProgress;
   final List<GameVersionViewModel> gameVersions;
-  final GameVersionViewModel? selectedGameVersion;
 
   const VanillaState({
     required this.isLocked,
     required this.downloadProgress,
     required this.gameVersions,
-    required this.selectedGameVersion,
   });
 
   const VanillaState.empty()
@@ -19,7 +17,6 @@ class VanillaState with EquatableMixin {
           isLocked: false,
           downloadProgress: 0,
           gameVersions: const [],
-          selectedGameVersion: null,
         );
 
   @override
@@ -27,10 +24,7 @@ class VanillaState with EquatableMixin {
         isLocked,
         downloadProgress,
         gameVersions,
-        selectedGameVersion,
       ];
-
-  bool get isGameVersionSelected => selectedGameVersion != null;
 
   bool get isDownloading => downloadProgress > 0 && downloadProgress < 1;
 
@@ -44,6 +38,5 @@ class VanillaState with EquatableMixin {
         isLocked: isLocked ?? this.isLocked,
         downloadProgress: downloadProgress ?? this.downloadProgress,
         gameVersions: gameVersions ?? this.gameVersions,
-        selectedGameVersion: selectedGameVersion ?? this.selectedGameVersion,
       );
 }

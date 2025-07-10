@@ -24,16 +24,18 @@ class MinecraftServerInstaller extends StatelessWidget {
     final getGameVersionListUseCase = GetGameVersionListUseCase(gameVersionRepository);
     final downloadServerFileUseCase = DownloadServerFileUseCase(gameVersionRepository);
 
+    final installationBloc = InstallationBloc();
+
     return MaterialApp(
       title: 'Minecraft Server Installer',
       theme: ThemeData.light().copyWith(colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue.shade900)),
       home: MultiBlocProvider(
         providers: [
+          BlocProvider.value(value: installationBloc),
           BlocProvider<VanillaBloc>(
-            create: (_) => VanillaBloc(getGameVersionListUseCase, downloadServerFileUseCase)
+            create: (_) => VanillaBloc(installationBloc, getGameVersionListUseCase, downloadServerFileUseCase)
               ..add(VanillaGameVersionListLoadedEvent()),
           ),
-          BlocProvider(create: (_) => InstallationBloc())
         ],
         child: Scaffold(
           body: BlocConsumer<VanillaBloc, VanillaState>(

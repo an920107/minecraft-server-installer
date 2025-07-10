@@ -39,7 +39,7 @@ class _BasicConfigurationTabState extends State<BasicConfigurationTab> {
             const Gap(32),
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-              onPressed: state.isGameVersionSelected ? _downloadServerFile : null,
+              onPressed: context.watch<InstallationBloc>().state.isGameVersionSelected ? _downloadServerFile : null,
               icon: const Icon(Icons.download),
               label: const Padding(
                 padding: EdgeInsets.symmetric(vertical: 12),
