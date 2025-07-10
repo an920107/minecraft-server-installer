@@ -128,7 +128,7 @@ class BasicConfigurationTab extends StatelessWidget {
                       canRequestFocus: false,
                       readOnly: true,
                       decoration: InputDecoration(
-                        label: const Text('${Strings.labelMinRamSize} (MB)'),
+                        label: const Text('${Strings.fieldMinRamSize} (MB)'),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
                     ),
@@ -140,7 +140,7 @@ class BasicConfigurationTab extends StatelessWidget {
                       canRequestFocus: false,
                       readOnly: true,
                       decoration: InputDecoration(
-                        label: const Text('${Strings.labelMaxRamSize} (MB)'),
+                        label: const Text('${Strings.fieldMaxRamSize} (MB)'),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
                     ),
