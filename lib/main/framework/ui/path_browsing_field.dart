@@ -6,35 +6,17 @@ import 'package:minecraft_server_installer/main/adapter/presentation/installatio
 import 'package:minecraft_server_installer/main/adapter/presentation/installation_state.dart';
 import 'package:minecraft_server_installer/main/framework/ui/strings.dart';
 
-class PathBrowsingField extends StatefulWidget {
+class PathBrowsingField extends StatelessWidget {
   const PathBrowsingField({super.key});
 
   @override
-  State<PathBrowsingField> createState() => _PathBrowsingFieldState();
-}
-
-class _PathBrowsingFieldState extends State<PathBrowsingField> {
-  final _textEditingController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    _textEditingController.text = context.read<InstallationBloc>().state.savePath ?? '';
-  }
-
-  @override
   Widget build(BuildContext context) => BlocConsumer<InstallationBloc, InstallationState>(
-        listener: (_, state) {
-          if (state.savePath != null) {
-            _textEditingController.text = state.savePath!;
-          }
-        },
-        builder: (_, __) => Row(
+        listener: (_, __) {},
+        builder: (_, state) => Row(
           children: [
             Expanded(
               child: TextField(
-                controller: _textEditingController,
+                controller: TextEditingController(text: state.savePath ?? ''),
                 readOnly: true,
                 canRequestFocus: false,
                 decoration: InputDecoration(
@@ -47,7 +29,7 @@ class _PathBrowsingFieldState extends State<PathBrowsingField> {
             SizedBox(
               height: 48,
               child: OutlinedButton(
-                onPressed: _browseDirectory,
+                onPressed: () => _browseDirectory(context, initialPath: state.savePath),
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                 ),
@@ -58,13 +40,14 @@ class _PathBrowsingFieldState extends State<PathBrowsingField> {
         ),
       );
 
-  Future<void> _browseDirectory() async {
+  Future<void> _browseDirectory(BuildContext context, {String? initialPath}) async {
+    final hasInitialPath = initialPath?.isNotEmpty ?? false;
     final directory = await FilePicker.platform.getDirectoryPath(
       dialogTitle: Strings.dialogTitleSelectDirectory,
-      initialDirectory: _textEditingController.text.isNotEmpty ? _textEditingController.text : null,
+      initialDirectory: hasInitialPath ? initialPath : null,
     );
 
-    if (!mounted || directory == null) {
+    if (!context.mounted || directory == null) {
       return;
     }
 
