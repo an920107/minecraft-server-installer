@@ -21,6 +21,7 @@ class BasicConfigurationTab extends StatelessWidget {
           _pathBrowsingField,
           const Gap(16),
           _eulaCheckbox,
+          _guiCheckBox,
           _enableCustomRamSizeCheckbox,
           _customRamSizeControl,
           const Spacer(),
@@ -80,6 +81,19 @@ class BasicConfigurationTab extends StatelessWidget {
             icon: const Icon(Icons.info_outline),
           ),
         ],
+      );
+
+  Widget get _guiCheckBox => BlocConsumer<InstallationBloc, InstallationState>(
+        listener: (_, __) {},
+        builder: (context, state) => CheckboxListTile(
+          title: const Text(Strings.fieldGui),
+          value: state.isGuiEnabled,
+          onChanged: (value) =>
+              context.read<InstallationBloc>().add(InstallationConfigurationUpdatedEvent(isGuiEnabled: value)),
+          controlAffinity: ListTileControlAffinity.leading,
+          contentPadding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        ),
       );
 
   Widget get _enableCustomRamSizeCheckbox => BlocConsumer<InstallationBloc, InstallationState>(
