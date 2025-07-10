@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:minecraft_server_installer/main/adapter/presentation/installation_bloc.dart';
 import 'package:minecraft_server_installer/main/framework/ui/path_browsing_field.dart';
 import 'package:minecraft_server_installer/main/framework/ui/strings.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/presentation/vanilla_bloc.dart';
@@ -31,7 +32,7 @@ class _BasicConfigurationTabState extends State<BasicConfigurationTab> {
 
   Widget get _bottomControl => BlocConsumer<VanillaBloc, VanillaState>(
         listener: (_, __) {},
-        builder: (context, state) => Row(
+        builder: (_, state) => Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             if (state.isDownloading) Expanded(child: LinearProgressIndicator(value: state.downloadProgress)),
@@ -50,6 +51,7 @@ class _BasicConfigurationTabState extends State<BasicConfigurationTab> {
       );
 
   void _downloadServerFile() {
-    context.read<VanillaBloc>().add(VanillaServerFileDownloadedEvent('.'));
+    final savePath = context.read<InstallationBloc>().state.savePath;
+    context.read<VanillaBloc>().add(VanillaServerFileDownloadedEvent(savePath!));
   }
 }

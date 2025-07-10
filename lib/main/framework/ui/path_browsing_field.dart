@@ -17,6 +17,13 @@ class _PathBrowsingFieldState extends State<PathBrowsingField> {
   final _textEditingController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+
+    _textEditingController.text = context.read<InstallationBloc>().state.savePath ?? '';
+  }
+
+  @override
   Widget build(BuildContext context) => BlocConsumer<InstallationBloc, InstallationState>(
         listener: (_, state) {
           if (state.savePath != null) {
