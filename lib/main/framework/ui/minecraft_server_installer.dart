@@ -4,6 +4,7 @@ import 'package:minecraft_server_installer/main/adapter/gateway/installation_rep
 import 'package:minecraft_server_installer/main/adapter/presentation/installation_bloc.dart';
 import 'package:minecraft_server_installer/main/adapter/presentation/installation_state.dart';
 import 'package:minecraft_server_installer/main/application/use_case/download_file_use_case.dart';
+import 'package:minecraft_server_installer/main/application/use_case/write_file_use_case.dart';
 import 'package:minecraft_server_installer/main/framework/api/installation_api_service_impl.dart';
 import 'package:minecraft_server_installer/main/framework/storage/installation_file_storage_impl.dart';
 import 'package:minecraft_server_installer/main/framework/ui/basic_configuration_tab.dart';
@@ -28,6 +29,7 @@ class MinecraftServerInstaller extends StatelessWidget {
     final gameVersionRepository = VanillaRepositoryImpl(gameVersionApiService);
 
     final downloadFileUseCase = DownloadFileUseCase(installationRepository);
+    final writeFileUseCase = WriteFileUseCase(installationRepository);
     final getGameVersionListUseCase = GetGameVersionListUseCase(gameVersionRepository);
 
     return MaterialApp(
@@ -35,7 +37,7 @@ class MinecraftServerInstaller extends StatelessWidget {
       theme: ThemeData.light().copyWith(colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue.shade900)),
       home: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => InstallationBloc(downloadFileUseCase)),
+          BlocProvider(create: (_) => InstallationBloc(downloadFileUseCase, writeFileUseCase)),
           BlocProvider<VanillaBloc>(
             create: (_) => VanillaBloc(getGameVersionListUseCase)..add(VanillaGameVersionListLoadedEvent()),
           ),

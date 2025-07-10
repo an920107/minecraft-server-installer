@@ -6,5 +6,5 @@ class DownloadFileUseCase {
   DownloadFileUseCase(this._installationRepository);
 
   Future<void> call(Uri url, String path, {DownloadProgressCallback? onProgressChanged}) =>
-      _installationRepository.downloadServerFile(url, path, onProgressChanged: onProgressChanged);
+      _installationRepository.downloadFile(url, path, onProgressChanged: onProgressChanged);
 }

@@ -9,8 +9,11 @@ class InstallationRepositoryImpl implements InstallationRepository {
   InstallationRepositoryImpl(this._apiService, this._fileStorage);
 
   @override
-  Future<void> downloadServerFile(Uri url, String path, {DownloadProgressCallback? onProgressChanged}) async {
+  Future<void> downloadFile(Uri url, String path, {DownloadProgressCallback? onProgressChanged}) async {
     final fileBytes = await _apiService.fetchRemoteFile(url, onProgressChanged: onProgressChanged);
     await _fileStorage.saveFile(fileBytes, path);
   }
+
+  @override
+  Future<void> writeFile(String path, String content) => _fileStorage.writeFile(path, content);
 }
