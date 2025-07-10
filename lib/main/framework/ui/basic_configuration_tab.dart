@@ -1,10 +1,11 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:minecraft_server_installer/main/adapter/presentation/installation_bloc.dart';
 import 'package:minecraft_server_installer/main/adapter/presentation/installation_state.dart';
+import 'package:minecraft_server_installer/main/adapter/presentation/range_view_model.dart';
 import 'package:minecraft_server_installer/main/constants.dart';
-import 'package:minecraft_server_installer/main/framework/ui/path_browsing_field.dart';
 import 'package:minecraft_server_installer/main/framework/ui/strings.dart';
 import 'package:minecraft_server_installer/vanilla/framework/ui/game_version_dropdown.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -17,12 +18,44 @@ class BasicConfigurationTab extends StatelessWidget {
         children: [
           const GameVersionDropdown(),
           const Gap(16),
-          const PathBrowsingField(),
+          _pathBrowsingField,
           const Gap(16),
           _eulaCheckbox,
+          _enableCustomRamSizeCheckbox,
+          _customRamSizeControl,
           const Spacer(),
           _bottomControl,
         ],
+      );
+
+  Widget get _pathBrowsingField => BlocConsumer<InstallationBloc, InstallationState>(
+        listener: (_, __) {},
+        builder: (context, state) => Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: TextEditingController(text: state.savePath ?? ''),
+                readOnly: true,
+                canRequestFocus: false,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                  label: const Text('${Strings.fieldPath} *'),
+                ),
+              ),
+            ),
+            const Gap(8),
+            SizedBox(
+              height: 48,
+              child: OutlinedButton(
+                onPressed: () => _browseDirectory(context, initialPath: state.savePath),
+                style: OutlinedButton.styleFrom(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                ),
+                child: const Text(Strings.buttonBrowse),
+              ),
+            ),
+          ],
+        ),
       );
 
   Widget get _eulaCheckbox => Row(
@@ -49,6 +82,76 @@ class BasicConfigurationTab extends StatelessWidget {
         ],
       );
 
+  Widget get _enableCustomRamSizeCheckbox => BlocConsumer<InstallationBloc, InstallationState>(
+        listener: (_, __) {},
+        builder: (context, state) => CheckboxListTile(
+          title: const Text(Strings.fieldCustomRamSize),
+          value: state.isCustomRamSizeEnabled,
+          onChanged: (value) => context
+              .read<InstallationBloc>()
+              .add(InstallationConfigurationUpdatedEvent(isCustomRamSizeEnabled: value ?? false)),
+          controlAffinity: ListTileControlAffinity.leading,
+          contentPadding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        ),
+      );
+
+  Widget get _customRamSizeControl => BlocConsumer<InstallationBloc, InstallationState>(
+        listener: (_, __) {},
+        builder: (context, state) {
+          if (!state.isCustomRamSizeEnabled) {
+            return const SizedBox.shrink();
+          }
+
+          return Column(
+            children: [
+              RangeSlider(
+                values: RangeValues(state.ramSize.min.toDouble(), state.ramSize.max.toDouble()),
+                min: 512,
+                max: 16384,
+                divisions: (16384 - 512) ~/ 128,
+                labels: RangeLabels(
+                  '${state.ramSize.min} MB',
+                  '${state.ramSize.max} MB',
+                ),
+                onChanged: (values) => context.read<InstallationBloc>().add(
+                      InstallationConfigurationUpdatedEvent(
+                        customRamSize: RangeViewModel(min: values.start.toInt(), max: values.end.toInt()),
+                      ),
+                    ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: TextEditingController(text: state.ramSize.min.toString()),
+                      canRequestFocus: false,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        label: const Text('${Strings.labelMinRamSize} (MB)'),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                      ),
+                    ),
+                  ),
+                  const Gap(16),
+                  Expanded(
+                    child: TextField(
+                      controller: TextEditingController(text: state.ramSize.max.toString()),
+                      canRequestFocus: false,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        label: const Text('${Strings.labelMaxRamSize} (MB)'),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          );
+        },
+      );
+
   Widget get _bottomControl => BlocConsumer<InstallationBloc, InstallationState>(
         listener: (_, __) {},
         builder: (context, state) => Row(
@@ -70,6 +173,22 @@ class BasicConfigurationTab extends StatelessWidget {
           ],
         ),
       );
+
+  Future<void> _browseDirectory(BuildContext context, {String? initialPath}) async {
+    final hasInitialPath = initialPath?.isNotEmpty ?? false;
+    final directory = await FilePicker.platform.getDirectoryPath(
+      dialogTitle: Strings.dialogTitleSelectDirectory,
+      initialDirectory: hasInitialPath ? initialPath : null,
+    );
+
+    if (!context.mounted || directory == null) {
+      return;
+    }
+
+    context.read<InstallationBloc>().add(InstallationConfigurationUpdatedEvent(
+          savePath: directory,
+        ));
+  }
 
   void _downloadServerFile(BuildContext context) {
     context.read<InstallationBloc>().add((InstallationStartedEvent()));
