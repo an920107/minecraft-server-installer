@@ -39,6 +39,8 @@ class InstallationBloc extends Bloc<InstallationEvent, InstallationState> {
       await writeFileUseCase(startScriptFilePath, startScriptContent);
       await grantFilePermissionUseCase(startScriptFilePath);
 
+      await writeFileUseCase(path.join(savePath, Constants.eulaFileName), Constants.eulaFileContent);
+
       emit(state.copyWith(isLocked: false, downloadProgress: const ProgressViewModel.complete()));
     });
 
