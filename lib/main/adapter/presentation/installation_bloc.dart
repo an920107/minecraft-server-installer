@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:minecraft_server_installer/main/adapter/presentation/installation_state.dart';
 import 'package:minecraft_server_installer/main/adapter/presentation/progress_view_model.dart';
@@ -34,8 +32,9 @@ class InstallationBloc extends Bloc<InstallationEvent, InstallationState> {
       );
 
       final startScriptFilePath = path.join(savePath, Constants.startScriptFileName);
+      final serverFilePath = path.join('.', Constants.serverFileName);
       final startScriptContent =
-          'java -Xmx${state.ramSize.max}M -Xms${state.ramSize.min}M -jar ${Platform.isWindows ? '.${Constants.serverFileName}\r\n' : './${Constants.serverFileName}\n'}';
+          'java -Xmx${state.ramSize.max}M -Xms${state.ramSize.min}M -jar $serverFilePath ${state.isGuiEnabled ? '' : 'nogui'}';
       await writeFileUseCase(startScriptFilePath, startScriptContent);
       await grantFilePermissionUseCase(startScriptFilePath);
 
@@ -67,6 +66,7 @@ class InstallationBloc extends Bloc<InstallationEvent, InstallationState> {
         gameVersion: event.gameVersion,
         savePath: event.savePath,
         isEulaAgreed: event.isEulaAgreed,
+        isGuiEnabled: event.isGuiEnabled,
         isCustomRamSizeEnabled: event.isCustomRamSizeEnabled,
         customRamSize: event.customRamSize,
       );
@@ -89,6 +89,7 @@ class InstallationConfigurationUpdatedEvent extends InstallationEvent {
   final GameVersionViewModel? gameVersion;
   final String? savePath;
   final bool? isEulaAgreed;
+  final bool? isGuiEnabled;
   final bool? isCustomRamSizeEnabled;
   final RangeViewModel? customRamSize;
 
@@ -96,6 +97,7 @@ class InstallationConfigurationUpdatedEvent extends InstallationEvent {
     this.gameVersion,
     this.savePath,
     this.isEulaAgreed,
+    this.isGuiEnabled,
     this.isCustomRamSizeEnabled,
     this.customRamSize,
   });
