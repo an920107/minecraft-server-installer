@@ -7,12 +7,26 @@ class InstallationFileStorageImpl implements InstallationFileStorage {
   @override
   Future<void> saveFile(Uint8List fileBytes, String path) async {
     final file = File(path);
-
-    if (!await file.parent.exists()) {
-      await file.parent.create(recursive: true);
-    }
-
-    await file.create();
+    await file.create(recursive: true, exclusive: false);
     await file.writeAsBytes(fileBytes, flush: true);
+  }
+
+  @override
+  Future<void> writeFile(String path, String content) async {
+    File file = File(path);
+    await file.create(recursive: true, exclusive: false);
+    await file.writeAsString(content, flush: true);
+  }
+
+  @override
+  Future<void> grantFileExecutePermission(String path) async {
+    File file = File(path);
+    await file.create(recursive: true, exclusive: false);
+
+    if (Platform.isWindows) {
+      await Process.run('icacls', [path, '/grant', '%USERNAME%:(RX)']);
+    } else {
+      await Process.run('chmod', ['+x', path]);
+    }
   }
 }

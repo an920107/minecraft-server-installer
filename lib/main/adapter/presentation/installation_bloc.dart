@@ -1,13 +1,21 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:minecraft_server_installer/main/adapter/presentation/installation_state.dart';
 import 'package:minecraft_server_installer/main/adapter/presentation/progress_view_model.dart';
 import 'package:minecraft_server_installer/main/application/use_case/download_file_use_case.dart';
+import 'package:minecraft_server_installer/main/application/use_case/grant_file_permission_use_case.dart';
+import 'package:minecraft_server_installer/main/application/use_case/write_file_use_case.dart';
 import 'package:minecraft_server_installer/main/constants.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/presentation/game_version_view_model.dart';
 import 'package:path/path.dart' as path;
 
 class InstallationBloc extends Bloc<InstallationEvent, InstallationState> {
-  InstallationBloc(DownloadFileUseCase downloadFileUseCase) : super(const InstallationState.empty()) {
+  InstallationBloc(
+    DownloadFileUseCase downloadFileUseCase,
+    WriteFileUseCase writeFileUseCase,
+    GrantFilePermissionUseCase grantFilePermissionUseCase,
+  ) : super(const InstallationState.empty()) {
     on<InstallationStartedEvent>((_, emit) async {
       if (!state.canStartToInstall) {
         return;
@@ -23,6 +31,13 @@ class InstallationBloc extends Bloc<InstallationEvent, InstallationState> {
         path.join(savePath, Constants.serverFileName),
         onProgressChanged: (progressValue) => add(_InstallationProgressValueChangedEvent(progressValue)),
       );
+
+      final startScriptFilePath = path.join(savePath, Constants.startScriptFileName);
+      final startScriptContent = Platform.isWindows
+          ? 'java -jar .\\${Constants.serverFileName}\r\n'
+          : 'java -jar ./${Constants.serverFileName}\n';
+      await writeFileUseCase(startScriptFilePath, startScriptContent);
+      await grantFilePermissionUseCase(startScriptFilePath);
 
       emit(state.copyWith(isLocked: false, downloadProgress: const ProgressViewModel.complete()));
     });
