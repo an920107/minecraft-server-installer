@@ -15,16 +15,8 @@ class SideNavigationBar extends StatefulWidget {
 
 class _SideNavigationBarState extends State<SideNavigationBar> {
   bool _isExpanded = false;
-  PackageInfo? _packageInfo;
 
   double get width => _isExpanded ? 340 : 80;
-
-  @override
-  void initState() {
-    super.initState();
-    PackageInfo.fromPlatform().then((packageInfo) =>
-        WidgetsBinding.instance.addPostFrameCallback((_) => setState(() => _packageInfo = packageInfo)));
-  }
 
   @override
   Widget build(BuildContext context) => AnimatedContainer(
@@ -50,10 +42,7 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
                   text: Constants.appName,
                   leading: Padding(
                     padding: const EdgeInsets.only(right: 4),
-                    child: SizedBox.square(
-                      dimension: 32,
-                      child: Image.asset('assets/img/mcsi_logo.png', width: 2048, height: 2048),
-                    ),
+                    child: Image.asset('assets/img/mcsi_logo.png', width: 32, height: 32),
                   ),
                   padding: const EdgeInsets.only(left: 4),
                   expandedKey: const ValueKey('expandedTitle'),
@@ -90,12 +79,15 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
             const Gap(8),
             _navigationButton(NavigationItem.about),
             const Spacer(),
-            _animatedText(
-              text: 'Version ${_packageInfo?.version ?? ''}',
-              padding: EdgeInsets.zero,
-              expandedKey: const ValueKey('expandedVersion'),
-              collapsedKey: const ValueKey('collapsedVersion'),
-              alignment: Alignment.bottomCenter,
+            FutureBuilder(
+              future: PackageInfo.fromPlatform(),
+              builder: (context, snapshot) => _animatedText(
+                text: 'Version ${snapshot.data?.version ?? ''}',
+                padding: EdgeInsets.zero,
+                expandedKey: const ValueKey('expandedVersion'),
+                collapsedKey: const ValueKey('collapsedVersion'),
+                alignment: Alignment.bottomCenter,
+              ),
             ),
           ],
         ),

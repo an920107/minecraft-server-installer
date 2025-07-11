@@ -9,6 +9,7 @@ import 'package:minecraft_server_installer/main/application/use_case/write_file_
 import 'package:minecraft_server_installer/main/constants.dart';
 import 'package:minecraft_server_installer/main/framework/api/installation_api_service_impl.dart';
 import 'package:minecraft_server_installer/main/framework/storage/installation_file_storage_impl.dart';
+import 'package:minecraft_server_installer/main/framework/ui/about_tab.dart';
 import 'package:minecraft_server_installer/main/framework/ui/basic_configuration_tab.dart';
 import 'package:minecraft_server_installer/main/framework/ui/side_navigation_bar.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/gateway/vanilla_repository_impl.dart';
@@ -100,8 +101,9 @@ class MinecraftServerInstaller extends StatelessWidget {
         return const BasicConfigurationTab();
       case NavigationItem.modConfiguration:
       case NavigationItem.serverProperties:
-      case NavigationItem.about:
         return const Placeholder();
+      case NavigationItem.about:
+        return const AboutTab();
     }
   }
 }
