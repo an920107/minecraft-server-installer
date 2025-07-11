@@ -37,6 +37,7 @@ dependencies:
   equatable: ^2.0.7
   file_picker: ^10.2.0
   flutter_bloc: ^9.1.1
+  flutter_svg: ^2.2.0
   gap: ^3.0.1
   http: ^1.4.0
   package_info_plus: ^8.3.0
@@ -71,6 +72,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/img/
+    - assets/svg/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

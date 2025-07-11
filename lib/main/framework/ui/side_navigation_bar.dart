@@ -15,16 +15,8 @@ class SideNavigationBar extends StatefulWidget {
 
 class _SideNavigationBarState extends State<SideNavigationBar> {
   bool _isExpanded = false;
-  PackageInfo? _packageInfo;
 
-  double get width => _isExpanded ? 360 : 80;
-
-  @override
-  void initState() {
-    super.initState();
-    PackageInfo.fromPlatform().then((packageInfo) =>
-        WidgetsBinding.instance.addPostFrameCallback((_) => setState(() => _packageInfo = packageInfo)));
-  }
+  double get width => _isExpanded ? 340 : 80;
 
   @override
   Widget build(BuildContext context) => AnimatedContainer(
@@ -48,9 +40,9 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
               children: [
                 _animatedText(
                   text: Constants.appName,
-                  leading: SizedBox.square(
-                    dimension: 36,
-                    child: Image.asset('assets/img/mcsi_logo.png', width: 2048, height: 2048),
+                  leading: Padding(
+                    padding: const EdgeInsets.only(right: 4),
+                    child: Image.asset('assets/img/mcsi_logo.png', width: 32, height: 32),
                   ),
                   padding: const EdgeInsets.only(left: 4),
                   expandedKey: const ValueKey('expandedTitle'),
@@ -87,12 +79,15 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
             const Gap(8),
             _navigationButton(NavigationItem.about),
             const Spacer(),
-            _animatedText(
-              text: 'Version ${_packageInfo?.version ?? ''}',
-              padding: EdgeInsets.zero,
-              expandedKey: const ValueKey('expandedVersion'),
-              collapsedKey: const ValueKey('collapsedVersion'),
-              alignment: Alignment.bottomCenter,
+            FutureBuilder(
+              future: PackageInfo.fromPlatform(),
+              builder: (context, snapshot) => _animatedText(
+                text: 'Version ${snapshot.data?.version ?? ''}',
+                padding: EdgeInsets.zero,
+                expandedKey: const ValueKey('expandedVersion'),
+                collapsedKey: const ValueKey('collapsedVersion'),
+                alignment: Alignment.bottomCenter,
+              ),
             ),
           ],
         ),
@@ -173,7 +168,7 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
   }
 }
 
-extension _NavigationItemContent on NavigationItem {
+extension NavigationItemContent on NavigationItem {
   String get title {
     switch (this) {
       case NavigationItem.basicConfiguration:

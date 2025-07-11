@@ -17,6 +17,9 @@ class GameVersionDropdown extends StatelessWidget {
           enabled: state.gameVersions.isNotEmpty,
           requestFocusOnTap: false,
           expandedInsets: EdgeInsets.zero,
+          inputDecorationTheme: Theme.of(context)
+              .inputDecorationTheme
+              .copyWith(border: OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
           label: const Text('${Strings.fieldGameVersion} *'),
           onSelected: (value) {
             if (value != null) {

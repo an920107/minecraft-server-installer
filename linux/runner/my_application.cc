@@ -22,7 +22,7 @@ static void my_application_activate(GApplication* application) {
 
   gtk_window_set_decorated(window, FALSE);
 
-  gtk_window_set_default_size(window, 800, 600);
+  gtk_window_set_default_size(window, 900, 600);
   gtk_widget_show(GTK_WIDGET(window));
 
   g_autoptr(FlDartProject) project = fl_dart_project_new();
