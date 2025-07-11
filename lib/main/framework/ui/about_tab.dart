@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:minecraft_server_installer/main/constants.dart';
+import 'package:minecraft_server_installer/main/framework/ui/strings.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AboutTab extends StatelessWidget {
@@ -54,11 +55,11 @@ class AboutTab extends StatelessWidget {
                   ),
                   const Gap(8),
                   Text(
-                    '讓 Minecraft 伺服器安裝變得更簡單！',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey.shade700,
-                        ),
+                    Strings.textSlogen,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontWeight: FontWeight.w500, color: Colors.grey.shade700),
                   ),
                 ],
               ),
@@ -66,18 +67,18 @@ class AboutTab extends StatelessWidget {
             const Gap(32),
             Row(
               children: [
-                _actionButton(text: '教學影片', svgAssetName: 'assets/svg/youtube.svg'),
+                _actionButton(text: Strings.buttonTutorialVideo, svgAssetName: 'assets/svg/youtube.svg'),
                 const Gap(12),
-                _actionButton(text: '問題回報', svgAssetName: 'assets/svg/bug.svg'),
+                _actionButton(text: Strings.buttonBugReport, svgAssetName: 'assets/svg/bug.svg'),
                 const Gap(12),
-                _actionButton(text: '聯絡作者', svgAssetName: 'assets/svg/send.svg'),
+                _actionButton(text: Strings.buttonContactAuthor, svgAssetName: 'assets/svg/send.svg'),
                 const Gap(12),
-                _actionButton(text: '原始碼', svgAssetName: 'assets/svg/github.svg'),
+                _actionButton(text: Strings.buttonSourceCode, svgAssetName: 'assets/svg/github.svg'),
               ],
             ),
             const Spacer(),
             Text(
-              'Copyright © 2025 SquidSpirit',
+              Strings.textCopyright,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey.shade700),
             ),
           ],
@@ -114,10 +115,10 @@ class AboutTab extends StatelessWidget {
                       const Gap(12),
                       Text(
                         text,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey.shade700,
-                            ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(fontWeight: FontWeight.w500, color: Colors.grey.shade700),
                       ),
                     ],
                   ),
