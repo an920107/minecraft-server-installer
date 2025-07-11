@@ -39,7 +39,7 @@ class BasicConfigurationTab extends StatelessWidget {
                 readOnly: true,
                 canRequestFocus: false,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                   label: const Text('${Strings.fieldPath} *'),
                 ),
               ),
@@ -50,9 +50,12 @@ class BasicConfigurationTab extends StatelessWidget {
               child: OutlinedButton(
                 onPressed: () => _browseDirectory(context, initialPath: state.savePath),
                 style: OutlinedButton.styleFrom(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
-                child: const Text(Strings.buttonBrowse),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(Strings.buttonBrowse),
+                ),
               ),
             ),
           ],
@@ -72,7 +75,7 @@ class BasicConfigurationTab extends StatelessWidget {
                           .add(InstallationConfigurationUpdatedEvent(isEulaAgreed: value ?? false)),
                       controlAffinity: ListTileControlAffinity.leading,
                       contentPadding: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     )),
           ),
           IconButton(
@@ -92,7 +95,7 @@ class BasicConfigurationTab extends StatelessWidget {
               context.read<InstallationBloc>().add(InstallationConfigurationUpdatedEvent(isGuiEnabled: value)),
           controlAffinity: ListTileControlAffinity.leading,
           contentPadding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       );
 
@@ -106,7 +109,7 @@ class BasicConfigurationTab extends StatelessWidget {
               .add(InstallationConfigurationUpdatedEvent(isCustomRamSizeEnabled: value ?? false)),
           controlAffinity: ListTileControlAffinity.leading,
           contentPadding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       );
 
@@ -144,7 +147,7 @@ class BasicConfigurationTab extends StatelessWidget {
                       readOnly: true,
                       decoration: InputDecoration(
                         label: const Text('${Strings.fieldMinRamSize} (MB)'),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                       ),
                     ),
                   ),
@@ -156,7 +159,7 @@ class BasicConfigurationTab extends StatelessWidget {
                       readOnly: true,
                       decoration: InputDecoration(
                         label: const Text('${Strings.fieldMaxRamSize} (MB)'),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                       ),
                     ),
                   ),
@@ -176,7 +179,7 @@ class BasicConfigurationTab extends StatelessWidget {
               Expanded(child: LinearProgressIndicator(value: state.downloadProgress.value)),
             const Gap(32),
             ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
+              style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
               onPressed:
                   context.watch<InstallationBloc>().state.canStartToInstall ? () => _downloadServerFile(context) : null,
               icon: const Icon(Icons.download),
