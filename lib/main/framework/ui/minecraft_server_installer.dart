@@ -5,9 +5,11 @@ import 'package:minecraft_server_installer/main/adapter/presentation/installatio
 import 'package:minecraft_server_installer/main/application/use_case/download_file_use_case.dart';
 import 'package:minecraft_server_installer/main/application/use_case/grant_file_permission_use_case.dart';
 import 'package:minecraft_server_installer/main/application/use_case/write_file_use_case.dart';
+import 'package:minecraft_server_installer/main/constants.dart';
 import 'package:minecraft_server_installer/main/framework/api/installation_api_service_impl.dart';
 import 'package:minecraft_server_installer/main/framework/storage/installation_file_storage_impl.dart';
 import 'package:minecraft_server_installer/main/framework/ui/basic_configuration_tab.dart';
+import 'package:minecraft_server_installer/main/framework/ui/side_navigation_bar.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/gateway/vanilla_repository_impl.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/presentation/vanilla_bloc.dart';
 import 'package:minecraft_server_installer/vanilla/application/use_case/get_game_version_list_use_case.dart';
@@ -16,8 +18,7 @@ import 'package:minecraft_server_installer/vanilla/framework/api/vanilla_api_ser
 class MinecraftServerInstaller extends StatelessWidget {
   const MinecraftServerInstaller({super.key});
 
-  Widget get _body =>
-      const Padding(padding: EdgeInsets.symmetric(horizontal: 24, vertical: 32), child: BasicConfigurationTab());
+  Widget get _body => const Padding(padding: EdgeInsets.all(32), child: BasicConfigurationTab());
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class MinecraftServerInstaller extends StatelessWidget {
     final getGameVersionListUseCase = GetGameVersionListUseCase(gameVersionRepository);
 
     return MaterialApp(
-      title: 'Minecraft Server Installer',
+      title: Constants.appName,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,
@@ -55,14 +56,21 @@ class MinecraftServerInstaller extends StatelessWidget {
           ),
         ],
         child: Scaffold(
-          body: Builder(
-            builder: (context) {
-              if (context.watch<InstallationBloc>().state.isLocked) {
-                return MouseRegion(cursor: SystemMouseCursors.forbidden, child: AbsorbPointer(child: _body));
-              }
+          body: Row(
+            children: [
+              const SideNavigationBar(),
+              Expanded(
+                child: Builder(
+                  builder: (context) {
+                    if (context.watch<InstallationBloc>().state.isLocked) {
+                      return MouseRegion(cursor: SystemMouseCursors.forbidden, child: AbsorbPointer(child: _body));
+                    }
 
-              return _body;
-            },
+                    return _body;
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),

@@ -8,6 +8,11 @@ abstract class Strings {
   static const fieldMaxRamSize = '最大 RAM 大小';
   static const buttonStartToInstall = '開始安裝';
   static const buttonBrowse = '瀏覽';
+  static const tabBasicConfiguration = '基本設定';
+  static const tabModConfiguration = '模組設定';
+  static const tabServerPropertiesConfiguration = '伺服器選項';
+  static const tabAbout = '關於與說明';
+  static const tabInstallationProgress = '安裝進度';
   static const tooltipEulaInfo = '點擊查看 EULA 條款';
   static const dialogTitleSelectDirectory = '選擇安裝目錄';
 }
