@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:minecraft_server_installer/main/adapter/presentation/navigation_bloc.dart';
 import 'package:minecraft_server_installer/main/constants.dart';
 import 'package:minecraft_server_installer/main/framework/ui/strings.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SideNavigationBar extends StatefulWidget {
   const SideNavigationBar({super.key});
@@ -12,9 +15,16 @@ class SideNavigationBar extends StatefulWidget {
 
 class _SideNavigationBarState extends State<SideNavigationBar> {
   bool _isExpanded = false;
-  NavigationItem _selectedNavigationItem = NavigationItem.basicConfiguration;
+  PackageInfo? _packageInfo;
 
   double get width => _isExpanded ? 360 : 80;
+
+  @override
+  void initState() {
+    super.initState();
+    PackageInfo.fromPlatform().then((packageInfo) =>
+        WidgetsBinding.instance.addPostFrameCallback((_) => setState(() => _packageInfo = packageInfo)));
+  }
 
   @override
   Widget build(BuildContext context) => AnimatedContainer(
@@ -78,7 +88,8 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
             _navigationButton(NavigationItem.about),
             const Spacer(),
             _animatedText(
-              text: 'Version 1.0.0',
+              text: 'Version ${_packageInfo?.version ?? ''}',
+              padding: EdgeInsets.zero,
               expandedKey: const ValueKey('expandedVersion'),
               collapsedKey: const ValueKey('collapsedVersion'),
               alignment: Alignment.bottomCenter,
@@ -116,7 +127,7 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
                               child: leading,
                             ),
                           ),
-                        Expanded(
+                        Flexible(
                           child: Text(
                             text,
                             key: expandedKey,
@@ -134,14 +145,15 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
       );
 
   Widget _navigationButton(NavigationItem navigationItem) {
-    final isSelected = _selectedNavigationItem == navigationItem;
+    final selectedNavigationItem = context.watch<NavigationBloc>().state;
+    final isSelected = selectedNavigationItem == navigationItem;
     final color = isSelected ? Colors.blue.shade900 : Colors.blueGrey.shade600;
     return Material(
       color: isSelected ? Colors.blueGrey.shade100 : Colors.transparent,
       borderRadius: BorderRadius.circular(8),
       child: InkWell(
         borderRadius: BorderRadius.circular(8),
-        onTap: () => setState(() => _selectedNavigationItem = navigationItem),
+        onTap: () => context.read<NavigationBloc>().add(NavigationChangedEvent(navigationItem)),
         child: Row(
           children: [
             Padding(
@@ -161,14 +173,30 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
   }
 }
 
-enum NavigationItem {
-  basicConfiguration(iconData: Icons.dashboard_rounded, title: Strings.tabBasicConfiguration),
-  modConfiguration(iconData: Icons.extension, title: Strings.tabModConfiguration),
-  serverProperties(iconData: Icons.settings, title: Strings.tabServerPropertiesConfiguration),
-  about(iconData: Icons.info, title: Strings.tabAbout);
+extension _NavigationItemContent on NavigationItem {
+  String get title {
+    switch (this) {
+      case NavigationItem.basicConfiguration:
+        return Strings.tabBasicConfiguration;
+      case NavigationItem.modConfiguration:
+        return Strings.tabModConfiguration;
+      case NavigationItem.serverProperties:
+        return Strings.tabServerProperties;
+      case NavigationItem.about:
+        return Strings.tabAbout;
+    }
+  }
 
-  final IconData iconData;
-  final String title;
-
-  const NavigationItem({required this.iconData, required this.title});
+  IconData get iconData {
+    switch (this) {
+      case NavigationItem.basicConfiguration:
+        return Icons.dashboard_rounded;
+      case NavigationItem.modConfiguration:
+        return Icons.extension;
+      case NavigationItem.serverProperties:
+        return Icons.settings;
+      case NavigationItem.about:
+        return Icons.info;
+    }
+  }
 }
