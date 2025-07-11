@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:minecraft_server_installer/main/constants.dart';
 import 'package:minecraft_server_installer/main/framework/ui/strings.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutTab extends StatelessWidget {
   const AboutTab({super.key});
@@ -67,13 +68,29 @@ class AboutTab extends StatelessWidget {
             const Gap(32),
             Row(
               children: [
-                _actionButton(text: Strings.buttonTutorialVideo, svgAssetName: 'assets/svg/youtube.svg'),
+                _actionButton(
+                  onPressed: () => launchUrl(Uri.parse(Constants.tutorialVideoUrl)),
+                  text: Strings.buttonTutorialVideo,
+                  svgAssetName: 'assets/svg/youtube.svg',
+                ),
                 const Gap(12),
-                _actionButton(text: Strings.buttonBugReport, svgAssetName: 'assets/svg/bug.svg'),
+                _actionButton(
+                  onPressed: () => launchUrl(Uri.parse(Constants.bugReportUrl)),
+                  text: Strings.buttonBugReport,
+                  svgAssetName: 'assets/svg/bug.svg',
+                ),
                 const Gap(12),
-                _actionButton(text: Strings.buttonContactAuthor, svgAssetName: 'assets/svg/send.svg'),
+                _actionButton(
+                  onPressed: () => launchUrl(Uri.parse('mailto:${Constants.authorEmail}')),
+                  text: Strings.buttonContactAuthor,
+                  svgAssetName: 'assets/svg/send.svg',
+                ),
                 const Gap(12),
-                _actionButton(text: Strings.buttonSourceCode, svgAssetName: 'assets/svg/github.svg'),
+                _actionButton(
+                  onPressed: () => launchUrl(Uri.parse(Constants.sourceCodeUrl)),
+                  text: Strings.buttonSourceCode,
+                  svgAssetName: 'assets/svg/github.svg',
+                ),
               ],
             ),
             const Spacer(),
@@ -88,6 +105,7 @@ class AboutTab extends StatelessWidget {
   Widget _actionButton({
     required String text,
     required String svgAssetName,
+    required void Function()? onPressed,
   }) =>
       Builder(
         builder: (context) => Expanded(
@@ -100,7 +118,7 @@ class AboutTab extends StatelessWidget {
                 border: Border.all(color: Colors.blueGrey.shade50, width: 2),
               ),
               child: InkWell(
-                onTap: () {},
+                onTap: onPressed,
                 borderRadius: BorderRadius.circular(8),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
