@@ -134,6 +134,7 @@ class BasicConfigurationTab extends StatelessWidget {
                       ),
                     ),
               ),
+              const Gap(16),
               Row(
                 children: [
                   Expanded(

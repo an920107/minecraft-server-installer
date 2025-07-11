@@ -168,7 +168,7 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
   }
 }
 
-extension _NavigationItemContent on NavigationItem {
+extension NavigationItemContent on NavigationItem {
   String get title {
     switch (this) {
       case NavigationItem.basicConfiguration:

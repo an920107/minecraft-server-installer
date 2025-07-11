@@ -83,14 +83,38 @@ class MinecraftServerInstaller extends StatelessWidget {
 
   Widget get _body => BlocConsumer<NavigationBloc, NavigationItem>(
         listener: (_, __) {},
-        builder: (_, state) => Padding(
-          padding: const EdgeInsets.all(32),
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
-            child: SizedBox(
-              key: ValueKey('tab${state.toString()}'),
-              child: _tabContent(state),
-            ),
+        builder: (context, state) => AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          child: Column(
+            key: ValueKey('tab${state.toString()}'),
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      state.title,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(fontWeight: FontWeight.w700, color: Colors.blueGrey.shade900),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(32),
+                  child: _tabContent(state),
+                ),
+              ),
+            ],
           ),
         ),
       );
