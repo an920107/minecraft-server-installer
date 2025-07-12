@@ -1,12 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:minecraft_server_installer/main/adapter/presentation/installation_state.dart';
-import 'package:minecraft_server_installer/main/adapter/presentation/progress_view_model.dart';
-import 'package:minecraft_server_installer/main/adapter/presentation/range_view_model.dart';
+import 'package:minecraft_server_installer/main/adapter/presenter/installation_state.dart';
+import 'package:minecraft_server_installer/main/adapter/presenter/progress_view_model.dart';
+import 'package:minecraft_server_installer/main/adapter/presenter/range_view_model.dart';
 import 'package:minecraft_server_installer/main/application/use_case/download_file_use_case.dart';
 import 'package:minecraft_server_installer/main/application/use_case/grant_file_permission_use_case.dart';
 import 'package:minecraft_server_installer/main/application/use_case/write_file_use_case.dart';
 import 'package:minecraft_server_installer/main/constants.dart';
-import 'package:minecraft_server_installer/vanilla/adapter/presentation/game_version_view_model.dart';
+import 'package:minecraft_server_installer/vanilla/adapter/presenter/game_version_view_model.dart';
 import 'package:path/path.dart' as path;
 
 class InstallationBloc extends Bloc<InstallationEvent, InstallationState> {

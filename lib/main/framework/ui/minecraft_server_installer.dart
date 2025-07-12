@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:minecraft_server_installer/main/adapter/gateway/installation_repository_impl.dart';
-import 'package:minecraft_server_installer/main/adapter/presentation/installation_bloc.dart';
-import 'package:minecraft_server_installer/main/adapter/presentation/navigation_bloc.dart';
+import 'package:minecraft_server_installer/main/adapter/presenter/installation_bloc.dart';
+import 'package:minecraft_server_installer/main/adapter/presenter/navigation_bloc.dart';
 import 'package:minecraft_server_installer/main/application/use_case/download_file_use_case.dart';
 import 'package:minecraft_server_installer/main/application/use_case/grant_file_permission_use_case.dart';
 import 'package:minecraft_server_installer/main/application/use_case/write_file_use_case.dart';
@@ -13,7 +13,7 @@ import 'package:minecraft_server_installer/main/framework/ui/about_tab.dart';
 import 'package:minecraft_server_installer/main/framework/ui/basic_configuration_tab.dart';
 import 'package:minecraft_server_installer/main/framework/ui/side_navigation_bar.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/gateway/vanilla_repository_impl.dart';
-import 'package:minecraft_server_installer/vanilla/adapter/presentation/vanilla_bloc.dart';
+import 'package:minecraft_server_installer/vanilla/adapter/presenter/vanilla_bloc.dart';
 import 'package:minecraft_server_installer/vanilla/application/use_case/get_game_version_list_use_case.dart';
 import 'package:minecraft_server_installer/vanilla/framework/api/vanilla_api_service_impl.dart';
 

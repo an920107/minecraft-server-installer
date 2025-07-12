@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:minecraft_server_installer/main/adapter/presentation/installation_bloc.dart';
+import 'package:minecraft_server_installer/main/adapter/presenter/installation_bloc.dart';
 import 'package:minecraft_server_installer/main/framework/ui/strings.dart';
-import 'package:minecraft_server_installer/vanilla/adapter/presentation/vanilla_bloc.dart';
-import 'package:minecraft_server_installer/vanilla/adapter/presentation/game_version_view_model.dart';
-import 'package:minecraft_server_installer/vanilla/adapter/presentation/vanilla_state.dart';
+import 'package:minecraft_server_installer/vanilla/adapter/presenter/vanilla_bloc.dart';
+import 'package:minecraft_server_installer/vanilla/adapter/presenter/game_version_view_model.dart';
+import 'package:minecraft_server_installer/vanilla/adapter/presenter/vanilla_state.dart';
 
 class GameVersionDropdown extends StatelessWidget {
   const GameVersionDropdown({super.key});

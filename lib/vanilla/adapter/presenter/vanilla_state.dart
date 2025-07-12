@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:minecraft_server_installer/vanilla/adapter/presentation/game_version_view_model.dart';
+import 'package:minecraft_server_installer/vanilla/adapter/presenter/game_version_view_model.dart';
 
 class VanillaState with EquatableMixin {
   final List<GameVersionViewModel> gameVersions;

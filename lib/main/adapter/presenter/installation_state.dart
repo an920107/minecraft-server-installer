@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:minecraft_server_installer/main/adapter/presentation/progress_view_model.dart';
-import 'package:minecraft_server_installer/main/adapter/presentation/range_view_model.dart';
-import 'package:minecraft_server_installer/vanilla/adapter/presentation/game_version_view_model.dart';
+import 'package:minecraft_server_installer/main/adapter/presenter/progress_view_model.dart';
+import 'package:minecraft_server_installer/main/adapter/presenter/range_view_model.dart';
+import 'package:minecraft_server_installer/vanilla/adapter/presenter/game_version_view_model.dart';
 
 class InstallationState with EquatableMixin {
   static const _defaultRamSize = RangeViewModel(min: 2048, max: 2048);

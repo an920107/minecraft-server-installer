@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:minecraft_server_installer/main/adapter/presentation/navigation_bloc.dart';
+import 'package:minecraft_server_installer/main/adapter/presenter/navigation_bloc.dart';
 import 'package:minecraft_server_installer/main/constants.dart';
 import 'package:minecraft_server_installer/main/framework/ui/strings.dart';
 import 'package:package_info_plus/package_info_plus.dart';
