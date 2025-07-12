@@ -28,16 +28,18 @@ class ServerPropertiesDto {
   });
 
   ServerPropertiesDto.fromEntity(ServerProperties serverProperties)
-      : serverPort = serverProperties.serverPort,
-        maxPlayers = serverProperties.maxPlayers,
-        spawnProtection = serverProperties.spawnProtection,
-        viewDistance = serverProperties.viewDistance,
-        pvp = serverProperties.pvp,
-        gameMode = serverProperties.gameMode.value,
-        difficulty = serverProperties.difficulty.value,
-        enableCommandBlock = serverProperties.enableCommandBlock,
-        onlineMode = serverProperties.onlineMode,
-        motd = serverProperties.motd;
+      : this(
+          serverPort: serverProperties.serverPort,
+          maxPlayers: serverProperties.maxPlayers,
+          spawnProtection: serverProperties.spawnProtection,
+          viewDistance: serverProperties.viewDistance,
+          pvp: serverProperties.pvp,
+          gameMode: serverProperties.gameMode.value,
+          difficulty: serverProperties.difficulty.value,
+          enableCommandBlock: serverProperties.enableCommandBlock,
+          onlineMode: serverProperties.onlineMode,
+          motd: serverProperties.motd,
+        );
 
   Map<String, String> toStringMap() => {
         'server-port': serverPort.toString(),

@@ -7,6 +7,7 @@ import 'package:minecraft_server_installer/main/adapter/presenter/installation_s
 import 'package:minecraft_server_installer/main/adapter/presenter/range_view_model.dart';
 import 'package:minecraft_server_installer/main/constants.dart';
 import 'package:minecraft_server_installer/main/framework/ui/strings.dart';
+import 'package:minecraft_server_installer/properties/adapter/presenter/server_properties_bloc.dart';
 import 'package:minecraft_server_installer/vanilla/framework/ui/game_version_dropdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -209,6 +210,6 @@ class BasicConfigurationTab extends StatelessWidget {
   }
 
   void _downloadServerFile(BuildContext context) {
-    context.read<InstallationBloc>().add((InstallationStartedEvent()));
+    context.read<InstallationBloc>().add((InstallationStartedEvent(context.read<ServerPropertiesBloc>().state)));
   }
 }

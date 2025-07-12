@@ -9,9 +9,9 @@ class ServerPropertiesRepositoryImpl implements ServerPropertiesRepository {
   ServerPropertiesRepositoryImpl(this._serverPropertiesFileStorage);
 
   @override
-  Future<void> writeServerProperties(ServerProperties serverProperties, String directoryPath) =>
+  Future<void> writeServerProperties(ServerProperties serverProperties, String savePath) =>
       _serverPropertiesFileStorage.writeServerProperties(
         ServerPropertiesDto.fromEntity(serverProperties),
-        directoryPath,
+        savePath,
       );
 }

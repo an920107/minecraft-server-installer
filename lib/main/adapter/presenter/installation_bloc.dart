@@ -2,43 +2,30 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:minecraft_server_installer/main/adapter/presenter/installation_state.dart';
 import 'package:minecraft_server_installer/main/adapter/presenter/progress_view_model.dart';
 import 'package:minecraft_server_installer/main/adapter/presenter/range_view_model.dart';
-import 'package:minecraft_server_installer/main/application/use_case/download_file_use_case.dart';
-import 'package:minecraft_server_installer/main/application/use_case/grant_file_permission_use_case.dart';
-import 'package:minecraft_server_installer/main/application/use_case/write_file_use_case.dart';
-import 'package:minecraft_server_installer/main/constants.dart';
+import 'package:minecraft_server_installer/main/application/use_case/install_server_use_case.dart';
+import 'package:minecraft_server_installer/properties/adapter/presenter/server_properties_view_model.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/presenter/game_version_view_model.dart';
-import 'package:path/path.dart' as path;
 
 class InstallationBloc extends Bloc<InstallationEvent, InstallationState> {
   InstallationBloc(
-    DownloadFileUseCase downloadFileUseCase,
-    WriteFileUseCase writeFileUseCase,
-    GrantFilePermissionUseCase grantFilePermissionUseCase,
+    InstallServerUseCase installServerUseCase,
   ) : super(const InstallationState.empty()) {
-    on<InstallationStartedEvent>((_, emit) async {
+    on<InstallationStartedEvent>((event, emit) async {
       if (!state.canStartToInstall) {
         return;
       }
 
-      final gameVersion = state.gameVersion!;
-      final savePath = state.savePath!;
-
       emit(state.copyWith(isLocked: true, downloadProgress: const ProgressViewModel.start()));
 
-      await downloadFileUseCase(
-        gameVersion.url,
-        path.join(savePath, Constants.serverFileName),
+      await installServerUseCase(
+        gameVersion: state.gameVersion!.toEntity(),
+        savePath: state.savePath!,
+        maxRam: state.ramSize.max,
+        minRam: state.ramSize.min,
+        isGuiEnabled: state.isGuiEnabled,
+        serverProperties: event.serverProperties.toEntity(),
         onProgressChanged: (progressValue) => add(_InstallationProgressValueChangedEvent(progressValue)),
       );
-
-      final startScriptFilePath = path.join(savePath, Constants.startScriptFileName);
-      final serverFilePath = path.join('.', Constants.serverFileName);
-      final startScriptContent =
-          'java -Xmx${state.ramSize.max}M -Xms${state.ramSize.min}M -jar $serverFilePath ${state.isGuiEnabled ? '' : 'nogui'}';
-      await writeFileUseCase(startScriptFilePath, startScriptContent);
-      await grantFilePermissionUseCase(startScriptFilePath);
-
-      await writeFileUseCase(path.join(savePath, Constants.eulaFileName), Constants.eulaFileContent);
 
       emit(state.copyWith(isLocked: false, downloadProgress: const ProgressViewModel.complete()));
     });
@@ -77,7 +64,11 @@ class InstallationBloc extends Bloc<InstallationEvent, InstallationState> {
 
 sealed class InstallationEvent {}
 
-class InstallationStartedEvent extends InstallationEvent {}
+class InstallationStartedEvent extends InstallationEvent {
+  final ServerPropertiesViewModel serverProperties;
+
+  InstallationStartedEvent(this.serverProperties);
+}
 
 class _InstallationProgressValueChangedEvent extends InstallationEvent {
   final double progressValue;

@@ -5,6 +5,7 @@ import 'package:minecraft_server_installer/main/adapter/presenter/installation_b
 import 'package:minecraft_server_installer/main/adapter/presenter/navigation_bloc.dart';
 import 'package:minecraft_server_installer/main/application/use_case/download_file_use_case.dart';
 import 'package:minecraft_server_installer/main/application/use_case/grant_file_permission_use_case.dart';
+import 'package:minecraft_server_installer/main/application/use_case/install_server_use_case.dart';
 import 'package:minecraft_server_installer/main/application/use_case/write_file_use_case.dart';
 import 'package:minecraft_server_installer/main/constants.dart';
 import 'package:minecraft_server_installer/main/framework/api/installation_api_service_impl.dart';
@@ -12,6 +13,10 @@ import 'package:minecraft_server_installer/main/framework/storage/installation_f
 import 'package:minecraft_server_installer/main/framework/ui/about_tab.dart';
 import 'package:minecraft_server_installer/main/framework/ui/basic_configuration_tab.dart';
 import 'package:minecraft_server_installer/main/framework/ui/side_navigation_bar.dart';
+import 'package:minecraft_server_installer/properties/adapter/gateway/server_properties_repository_impl.dart';
+import 'package:minecraft_server_installer/properties/adapter/presenter/server_properties_bloc.dart';
+import 'package:minecraft_server_installer/properties/application/use_case/write_server_properties_use_case.dart';
+import 'package:minecraft_server_installer/properties/framework/storage/server_properties_file_storage_impl.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/gateway/vanilla_repository_impl.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/presenter/vanilla_bloc.dart';
 import 'package:minecraft_server_installer/vanilla/application/use_case/get_game_version_list_use_case.dart';
@@ -22,17 +27,27 @@ class MinecraftServerInstaller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final gameVersionApiService = VanillaApiServiceImpl();
+    final gameVersionRepository = VanillaRepositoryImpl(gameVersionApiService);
+    final getGameVersionListUseCase = GetGameVersionListUseCase(gameVersionRepository);
+
+    final serverPropertiesFileStorage = ServerPropertiesFileStorageImpl();
+    final serverPropertiesRepository = ServerPropertiesRepositoryImpl(serverPropertiesFileStorage);
+    final writeServerPropertiesUseCase = WriteServerPropertiesUseCase(serverPropertiesRepository);
+
     final installationApiService = InstallationApiServiceImpl();
     final installationFileStorage = InstallationFileStorageImpl();
     final installationRepository = InstallationRepositoryImpl(installationApiService, installationFileStorage);
-
-    final gameVersionApiService = VanillaApiServiceImpl();
-    final gameVersionRepository = VanillaRepositoryImpl(gameVersionApiService);
-
     final downloadFileUseCase = DownloadFileUseCase(installationRepository);
     final writeFileUseCase = WriteFileUseCase(installationRepository);
     final grantFilePermissionUseCase = GrantFilePermissionUseCase(installationRepository);
-    final getGameVersionListUseCase = GetGameVersionListUseCase(gameVersionRepository);
+
+    final installServerUseCase = InstallServerUseCase(
+      downloadFileUseCase,
+      writeFileUseCase,
+      grantFilePermissionUseCase,
+      writeServerPropertiesUseCase,
+    );
 
     return MaterialApp(
       title: Constants.appName,
@@ -45,15 +60,12 @@ class MinecraftServerInstaller extends StatelessWidget {
       home: MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => NavigationBloc()),
-          BlocProvider(
-            create: (_) => InstallationBloc(
-              downloadFileUseCase,
-              writeFileUseCase,
-              grantFilePermissionUseCase,
-            ),
-          ),
+          BlocProvider(create: (_) => ServerPropertiesBloc()),
           BlocProvider<VanillaBloc>(
             create: (_) => VanillaBloc(getGameVersionListUseCase)..add(VanillaGameVersionListLoadedEvent()),
+          ),
+          BlocProvider(
+            create: (_) => InstallationBloc(installServerUseCase),
           ),
         ],
         child: Scaffold(

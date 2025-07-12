@@ -6,6 +6,6 @@ class WriteServerPropertiesUseCase {
 
   WriteServerPropertiesUseCase(this._serverPropertiesRepository);
 
-  Future<void> call(ServerProperties serverProperties, String directoryPath) =>
-      _serverPropertiesRepository.writeServerProperties(serverProperties, directoryPath);
+  Future<void> call(ServerProperties serverProperties, String savePath) =>
+      _serverPropertiesRepository.writeServerProperties(serverProperties, savePath);
 }

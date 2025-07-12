@@ -5,8 +5,8 @@ import 'package:minecraft_server_installer/properties/adapter/gateway/server_pro
 
 class ServerPropertiesFileStorageImpl implements ServerPropertiesFileStorage {
   @override
-  Future<void> writeServerProperties(ServerPropertiesDto serverPropertiesDto, String directoryPath) async {
-    File file = File('$directoryPath/server.properties');
+  Future<void> writeServerProperties(ServerPropertiesDto serverPropertiesDto, String savePath) async {
+    File file = File('$savePath/server.properties');
     await file.create(recursive: true);
 
     final propertiesMap = serverPropertiesDto.toStringMap();
