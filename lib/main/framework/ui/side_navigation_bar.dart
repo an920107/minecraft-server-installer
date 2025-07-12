@@ -49,7 +49,7 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
                   collapsedKey: const ValueKey('collapsedTitle'),
                   style: Theme.of(context)
                       .textTheme
-                      .titleMedium
+                      .titleSmall
                       ?.copyWith(fontWeight: FontWeight.w900, color: Colors.blueGrey.shade900),
                 ),
                 Material(
@@ -83,6 +83,7 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
               future: PackageInfo.fromPlatform(),
               builder: (context, snapshot) => _animatedText(
                 text: 'Version ${snapshot.data?.version ?? ''}',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey.shade700),
                 padding: EdgeInsets.zero,
                 expandedKey: const ValueKey('expandedVersion'),
                 collapsedKey: const ValueKey('collapsedVersion'),
