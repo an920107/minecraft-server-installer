@@ -6,6 +6,15 @@ abstract class Strings {
   static const fieldCustomRamSize = '啟用自定義 RAM 大小';
   static const fieldMinRamSize = '最小 RAM 大小';
   static const fieldMaxRamSize = '最大 RAM 大小';
+  static const fieldServerPort = '伺服器連接埠';
+  static const fieldMaxPlayers = '玩家人數上限';
+  static const fieldSpawnProtection = '重生點保護';
+  static const fieldViewDistance = '最大視野距離';
+  static const fieldPvp = '玩家間傷害';
+  static const fieldGameMode = '預設遊戲模式';
+  static const fieldDifficulty = '遊戲難度';
+  static const fieldEnableCommandBlock = '啟用指令方塊';
+  static const fieldMotd = '伺服器描述';
   static const buttonStartToInstall = '開始安裝';
   static const buttonBrowse = '瀏覽';
   static const buttonTutorialVideo = '教學影片';
@@ -18,7 +27,20 @@ abstract class Strings {
   static const tabAbout = '關於與說明';
   static const tabInstallationProgress = '安裝進度';
   static const tooltipEulaInfo = '點擊查看 EULA 條款';
+  static const tooltipResetToDefault = '重置為預設值';
+  static const tooltipRestoreChanges = '取消變更';
+  static const tooltipApplyChanges = '套用變更';
   static const dialogTitleSelectDirectory = '選擇安裝目錄';
+  static const gamemodeSurvival = '生存';
+  static const gamemodeCreative = '創造';
+  static const gamemodeAdventure = '冒險';
+  static const gamemodeSpectator = '觀察者';
+  static const difficultyPeaceful = '和平';
+  static const difficultyEasy = '簡單';
+  static const difficultyNormal = '普通';
+  static const difficultyHard = '困難';
+  static const textEnable = '啟用';
+  static const textDisable = '禁用';
   static const textSlogen = '讓 Minecraft 伺服器安裝變得更簡單！';
   static const textCopyright = 'Copyright © 2025 SquidSpirit';
 }

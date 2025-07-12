@@ -28,19 +28,18 @@ class ServerPropertiesViewModel with EquatableMixin {
     required this.motd,
   });
 
-  const ServerPropertiesViewModel.defaultValue()
-      : this(
-          serverPort: 25565,
-          maxPlayers: 20,
-          spawnProtection: 16,
-          viewDistance: 10,
-          pvp: true,
-          gameMode: GameMode.survival,
-          difficulty: Difficulty.normal,
-          enableCommandBlock: false,
-          onlineMode: true,
-          motd: 'A Minecraft Server',
-        );
+  static const defaultValue = ServerPropertiesViewModel(
+    serverPort: 25565,
+    maxPlayers: 20,
+    spawnProtection: 16,
+    viewDistance: 10,
+    pvp: true,
+    gameMode: GameMode.survival,
+    difficulty: Difficulty.normal,
+    enableCommandBlock: false,
+    onlineMode: true,
+    motd: 'A Minecraft Server',
+  );
 
   ServerProperties toEntity() => ServerProperties(
         serverPort: serverPort,
@@ -93,4 +92,9 @@ class ServerPropertiesViewModel with EquatableMixin {
         onlineMode,
         motd,
       ];
+
+  bool get isServerPortValid => serverPort > 0 && serverPort <= 65535;
+  bool get isMaxPlayersValid => maxPlayers > 0;
+  bool get isSpawnProtectionValid => spawnProtection >= 0;
+  bool get isViewDistanceValid => viewDistance > 0;
 }

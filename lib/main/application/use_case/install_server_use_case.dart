@@ -1,4 +1,3 @@
-
 import 'package:minecraft_server_installer/main/application/use_case/download_file_use_case.dart';
 import 'package:minecraft_server_installer/main/application/use_case/grant_file_permission_use_case.dart';
 import 'package:minecraft_server_installer/main/application/use_case/write_file_use_case.dart';
@@ -45,7 +44,8 @@ class InstallServerUseCase {
     await _grantFilePermissionUseCase(startScriptFilePath);
 
     // 3. Write EULA file
-    await _writeFileUseCase(path.join(savePath, Constants.eulaFileName), Constants.eulaFileContent);
+    final eulaFilePath = path.join(savePath, Constants.eulaFileName);
+    await _writeFileUseCase(eulaFilePath, Constants.eulaFileContent);
 
     // 4. Write server.properties file
     await _writeServerPropertiesUseCase(serverProperties, savePath);

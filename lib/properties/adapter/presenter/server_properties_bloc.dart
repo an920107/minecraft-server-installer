@@ -4,7 +4,7 @@ import 'package:minecraft_server_installer/properties/domain/enum/difficulty.dar
 import 'package:minecraft_server_installer/properties/domain/enum/game_mode.dart';
 
 class ServerPropertiesBloc extends Bloc<ServerPropertiesEvent, ServerPropertiesViewModel> {
-  ServerPropertiesBloc() : super(const ServerPropertiesViewModel.defaultValue()) {
+  ServerPropertiesBloc() : super(ServerPropertiesViewModel.defaultValue) {
     on<ServerPropertiesUpdatedEvent>((event, emit) => emit(
           state.copyWith(
             serverPort: event.serverPort ?? state.serverPort,

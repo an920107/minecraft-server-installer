@@ -17,6 +17,7 @@ import 'package:minecraft_server_installer/properties/adapter/gateway/server_pro
 import 'package:minecraft_server_installer/properties/adapter/presenter/server_properties_bloc.dart';
 import 'package:minecraft_server_installer/properties/application/use_case/write_server_properties_use_case.dart';
 import 'package:minecraft_server_installer/properties/framework/storage/server_properties_file_storage_impl.dart';
+import 'package:minecraft_server_installer/properties/framework/ui/server_properties_tab.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/gateway/vanilla_repository_impl.dart';
 import 'package:minecraft_server_installer/vanilla/adapter/presenter/vanilla_bloc.dart';
 import 'package:minecraft_server_installer/vanilla/application/use_case/get_game_version_list_use_case.dart';
@@ -123,21 +124,24 @@ class MinecraftServerInstaller extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(32),
-                  child: _tabContent(state),
+                  child: state.tabContent,
                 ),
               ),
             ],
           ),
         ),
       );
+}
 
-  Widget _tabContent(NavigationItem navigationItem) {
-    switch (navigationItem) {
+extension _NavigationItemExtension on NavigationItem {
+  Widget get tabContent {
+    switch (this) {
       case NavigationItem.basicConfiguration:
         return const BasicConfigurationTab();
       case NavigationItem.modConfiguration:
-      case NavigationItem.serverProperties:
         return const Placeholder();
+      case NavigationItem.serverProperties:
+        return const ServerPropertiesTab();
       case NavigationItem.about:
         return const AboutTab();
     }
